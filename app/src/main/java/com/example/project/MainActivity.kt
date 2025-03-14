@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         val etEmail = findViewById<EditText>(R.id.etEmail)
         val etPassword = findViewById<EditText>(R.id.etPassword)
-        val btnRegister = findViewById<Button>(R.id.btnSignIn)
+        val btnRegister = findViewById<Button>(R.id.btnRegister)
         val btnLogIn = findViewById<Button>(R.id.btnLogIn)
 
         // Botón para iniciar sesión
