@@ -13,13 +13,13 @@
         android:theme="@style/Theme.Project"
         tools:targetApi="31">
         <activity
+            android:name=".Registry"
+            android:exported="false"/>
+        <activity
             android:name=".AddStudets"
             android:exported="false" />
         <activity
             android:name=".TeacherMain"
-            android:exported="false" />
-        <activity
-            android:name=".QrGenerated"
             android:exported="false" />
         <activity
             android:name=".CreateNewClass"
@@ -29,9 +29,6 @@
             android:exported="false" />
         <activity
             android:name=".AdminMain"
-            android:exported="false" />
-        <activity
-            android:name=".QrScanner"
             android:exported="false" />
         <activity
             android:name=".GradesStudent"
