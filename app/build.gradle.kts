@@ -42,7 +42,6 @@ dependencies {
     implementation("com.google.firebase:firebase-auth:21.0.1")
     implementation(platform("com.google.firebase:firebase-bom:33.4.0"))
     implementation("com.google.android.gms:play-services-auth:20.7.0")
-    implementation("com.journeyapps: barcodescanner: 4.3.0")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
