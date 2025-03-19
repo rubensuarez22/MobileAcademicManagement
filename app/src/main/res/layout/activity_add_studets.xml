@@ -5,9 +5,5 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".QrScanner">
-
-
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    tools:context=".AddStudets"
+    android:layout_margin="10dp" />

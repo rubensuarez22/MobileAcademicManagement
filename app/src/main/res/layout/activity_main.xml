@@ -9,8 +9,8 @@
     android:layout_margin="10dp">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="158dp"
+        android:layout_width="392dp"
+        android:layout_height="201dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -35,6 +35,12 @@
             android:hint="Password"
             android:inputType="textPassword" />
 
+        <CheckBox
+            android:id="@+id/cbRemember"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Remember me" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -48,7 +54,7 @@
                 android:text="log in" />
 
             <Button
-                android:id="@+id/btnSignIn"
+                android:id="@+id/btnRegister"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

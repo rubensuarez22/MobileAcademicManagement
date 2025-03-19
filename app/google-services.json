@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "235277144826",
+    "project_id": "proyectito-f3dad",
+    "storage_bucket": "proyectito-f3dad.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:235277144826:android:c305270226a78a22992f43",
+        "android_client_info": {
+          "package_name": "com.example.project"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-ZrOvstVBnXUEl0G5ZL66YKjvAjefmDg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
