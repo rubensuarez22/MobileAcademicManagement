@@ -37,6 +37,8 @@ android {
 }
 
 dependencies {
+    implementation ("com.google.android.gms:play-services-base:18.6.0")
+    implementation ("com.google.android.gms:play-services-code-scanner:16.1.0")
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-database-ktx:20.2.1")
     implementation("com.google.firebase:firebase-auth:21.0.1")
@@ -48,6 +50,7 @@ dependencies {
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.firebase.firestore.ktx)
+    implementation(libs.play.services.base)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
