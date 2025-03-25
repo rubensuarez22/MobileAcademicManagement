@@ -2,6 +2,7 @@ package com.example.project
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -61,8 +62,21 @@ class MainActivity : AppCompatActivity() {
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     Toast.makeText(this, "Inicio de sesión exitoso", Toast.LENGTH_SHORT).show()
-                    //startActivity(Intent(this, Info::class.java))
-                    finish()
+                    // Obtener el usuario actualmente autenticado en Firebase
+                    val user = auth.currentUser
+                    // Si el usuario está autenticado, mostramos su correo y cargamos sus datos
+                    if (user != null) {
+                        loadUserData(user.uid) { rol ->
+                            Log.e("TAG", "Rol obtenido: $rol")
+                            when (rol) {
+                                "0" -> startActivity(Intent(this, StudentMain::class.java))
+                                "1" -> startActivity(Intent(this, TeacherMain::class.java))
+                                "2" -> startActivity(Intent(this, AdminMain::class.java))
+                                else -> Toast.makeText(this, "Rol no válido o no encontrado", Toast.LENGTH_SHORT).show()
+                            }
+                            finish()
+                        }
+                    }
                 } else {
                     Toast.makeText(this, "Error: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
                 }
@@ -83,17 +97,19 @@ class MainActivity : AppCompatActivity() {
             }
     }
 
-    private fun loadUserData(userId: String) {
-        // Se accede a la colección "users" y se busca el documento con el ID del usuario
+    private fun loadUserData(userId: String, onResult: (String?) -> Unit) {
         db.collection("users").document(userId).get()
             .addOnSuccessListener { document ->
-                if (document.exists()) { // Si el documento existe, extraer los datos
+                if (document.exists()) {
                     val rol = document.getString("rol")
+                    onResult(rol)
+                } else {
+                    onResult(null)
                 }
             }
             .addOnFailureListener {
-                // Si hay un error, mostrar un mensaje de fallo
                 Toast.makeText(this, "Error al cargar datos", Toast.LENGTH_SHORT).show()
+                onResult(null)
             }
     }
 }
