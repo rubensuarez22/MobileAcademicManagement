@@ -18,31 +18,33 @@ class AdminMain : AppCompatActivity() {
         // Inicializar Firebase Authentication
         auth = FirebaseAuth.getInstance()
 
-        val newClass = findViewById<Button>(R.id.btnNewClass)
-        val addStudent = findViewById<Button>(R.id.btnAddStudent)
-        val modUser = findViewById<Button>(R.id.btnModifyUsers)
-        val btnLogOut = findViewById<Button>(R.id.btnlo)
+        val btnSubjectManagement = findViewById<Button>(R.id.btnSubjectManagement) // Renombrado para mayor claridad
+        val btnUserManagement = findViewById<Button>(R.id.btnUserManagement) // Renombrado para mayor claridad
+        val btnLogout = findViewById<Button>(R.id.btnlo) // Usando el ID correcto del botón Log Out
 
+        // **Comentando la funcionalidad del botón "Add Student" ya que no aparece en el diseño reciente**
+        // val addStudent = findViewById<Button>(R.id.btnAddStudent)
+        // addStudent.setOnClickListener {
+        //     val intent = Intent(this, AddStudets::class.java)
+        //     startActivity(intent)
+        // }
 
-        newClass.setOnClickListener {
+        // Botón para Gestión de Asignaturas
+        btnSubjectManagement.text = "Subject Management"
+        btnSubjectManagement.setOnClickListener {
             val intent = Intent(this, CreateNewClass::class.java)
             startActivity(intent)
         }
 
-        // Botón para Agregar Usuario
-        addStudent.setOnClickListener {
-            val intent = Intent(this, AddStudets::class.java)
-            startActivity(intent)
-        }
-
-        // Botón para Modificar Usuario
-        modUser.setOnClickListener {
+        // Botón para Gestión de Usuarios
+        btnUserManagement.text = "User Management"
+        btnUserManagement.setOnClickListener {
             val intent = Intent(this, ModifyUsers::class.java)
             startActivity(intent)
         }
 
-        // Botón para Cerrar Sesion
-        btnLogOut.setOnClickListener {
+        // Botón para Cerrar Sesión
+        btnLogout.setOnClickListener {
             auth.signOut() // Cerrar sesión en Firebase
             prefs.wipe() // Borrar datos de SharedPreferences
             val intent = Intent(this, MainActivity::class.java)
