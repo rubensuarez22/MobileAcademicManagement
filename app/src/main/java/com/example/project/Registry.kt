@@ -31,7 +31,7 @@ class Registry : AppCompatActivity() {
         val Matricula = findViewById<EditText>(R.id.Matricula)
         val Facultad = findViewById<EditText>(R.id.Facultad)
         val Sexo = findViewById<EditText>(R.id.Sexo)
-        val btnSave = findViewById<Button>(R.id.btnentrar) // Botón para guardar datos
+        val btnSave = findViewById<Button>(R.id.btnSave) // Botón para guardar datos
 
         // Obtener el usuario actualmente autenticado en Firebase
         val user = auth.currentUser

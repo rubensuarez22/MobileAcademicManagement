@@ -1,6 +1,7 @@
 package com.example.project
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -105,7 +106,7 @@ class ModifySubjects : AppCompatActivity(), OnEditSubjectClickListener, OnDelete
 
     private fun loadStudentsFromFirebase() {
         db.collection("users")
-            .whereEqualTo("rol", "2")
+            .whereEqualTo("rol", "0")
             .get()
             .addOnSuccessListener { result ->
                 studentsList.clear()
@@ -124,18 +125,21 @@ class ModifySubjects : AppCompatActivity(), OnEditSubjectClickListener, OnDelete
             }
     }
 
+
     private fun loadExistingSubjectsFromFirebase() {
         db.collection("subjects")
             .get()
             .addOnSuccessListener { result ->
                 subjectsList.clear()
                 for (document in result) {
+                    val subjectName = document.getString("name") ?: "Nombre no encontrado" // Obtén el nombre
                     val subject = Subject(
-                        name = document.getString("name") ?: "",
+                        name = subjectName,
                         code = document.getString("code") ?: "",
                         description = document.getString("description") ?: "",
                         subjectId = document.id
                     )
+                    Log.d("FirebaseData", "Subject Name: $subjectName") // Agrega este log
                     subjectsList.add(subject)
                 }
                 subjectsAdapter.notifyDataSetChanged()

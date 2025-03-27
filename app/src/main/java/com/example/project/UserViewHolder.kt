@@ -35,16 +35,16 @@ class UserViewHolder(view: View, private val adapter: UserAdapter) : RecyclerVie
 
         btnSetStudentRole.setOnClickListener {
             currentUser.userId?.let { userId ->
-                updateUserRole(userId, "2") // 2 para Student
+                updateUserRole(userId, "0") // 0 student
             }
         }
     }
 
     private fun updateRoleTextView(role: String) {
         userRoleTextView.text = when (role) {
-            "0" -> "Admin User"
+            "2" -> "Admin User"
             "1" -> "Teacher"
-            "2" -> "Student"
+            "0" -> "Student"
             else -> "Unknown Role"
         }
     }
