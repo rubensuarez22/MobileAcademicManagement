@@ -32,7 +32,7 @@ class AdminMain : AppCompatActivity() {
         // Botón para Gestión de Asignaturas
         btnSubjectManagement.text = "Subject Management"
         btnSubjectManagement.setOnClickListener {
-            val intent = Intent(this, CreateNewClass::class.java)
+            val intent = Intent(this, ModifySubjects::class.java)
             startActivity(intent)
         }
 
