@@ -27,8 +27,6 @@ class GradesStudent : AppCompatActivity() {
             startActivity(Intent(this, StudentMain::class.java))
         }
 
-        SpinStudent.setOnClickListener {
 
-        }
     }
 }

@@ -3,7 +3,6 @@ package com.example.project
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -19,11 +18,12 @@ class StudentMain : AppCompatActivity() {
             insets
         }
 
-        val btnGradesStudent = findViewById<Button>(R.id.btnGrades)
+        val btnGradesStudent = findViewById<Button>(R.id.btnGradeStudent)
         val btnLogOut = findViewById<Button>(R.id.btnLogOut)
 
         btnGradesStudent.setOnClickListener {
             startActivity(Intent(this, GradesStudent::class.java))
+            finish()
         }
 
         btnLogOut.setOnClickListener{
