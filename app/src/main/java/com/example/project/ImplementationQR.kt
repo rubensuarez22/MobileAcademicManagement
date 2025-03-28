@@ -43,8 +43,7 @@ class ImplementationQR(private val activity: AppCompatActivity) {
 
     private fun initVars() {
         // Asegúrate de que en el layout de la Activity existan las vistas con estos IDs
-        scanQrBtn = activity.findViewById(R.id.scanQrBtn)
-        scannedValueTv = activity.findViewById(R.id.scannedValueTv)
+        scanQrBtn = activity.findViewById(R.id.btnScanAttendance)
 
         val options = initializeGoogleScanner()
         scanner = GmsBarcodeScanning.getClient(activity, options)

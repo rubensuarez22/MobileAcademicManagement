@@ -6,41 +6,89 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".AdminMain"
-    android:layout_margin="10dp">
+    android:background="#56B4B8">
 
-    <Button
-        android:id="@+id/btnNewClass"
+    <TextView
+        android:id="@+id/textViewTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Create new class"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
-        app:layout_constraintStart_toStartOf="parent"
+        android:text="Administrator View"
+        android:textSize="36sp"
+        android:textColor="@android:color/white"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.319" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/textViewSubtitle"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <TextView
+        android:id="@+id/textViewSubtitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Manage your platform from this view."
+        android:textSize="16sp"
+        android:textColor="@android:color/white"
+        android:gravity="center"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        app:layout_constraintTop_toBottomOf="@+id/textViewTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/btnUserManagement" />
 
     <Button
-        android:id="@+id/btnModifyUsers"
-        android:layout_width="wrap_content"
+        android:id="@+id/btnUserManagement"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Modify users"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.494"
+        android:text="User Management"
+        android:textSize="18sp"
+        android:backgroundTint="@android:color/white"
+        android:textColor="#56b4b8"
+        android:padding="16dp"
+        android:layout_marginTop="48dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        app:cornerRadius="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/textViewSubtitle"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.566" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/btnSubjectManagement" />
 
     <Button
-        android:id="@+id/btnAddStudent"
-        android:layout_width="wrap_content"
+        android:id="@+id/btnSubjectManagement"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Add Students"
+        android:text="Subject Management"
+        android:textSize="18sp"
+        android:background="@drawable/button_border_only"
+        android:padding="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        app:backgroundTint="@null"
+        app:cornerRadius="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/btnUserManagement"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/btnlo" />
+
+
+    <Button
+        android:id="@+id/btnlo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Log Out"
+        android:textSize="18sp"
+        android:backgroundTint="@android:color/white"
+        android:textColor="#56B4B8"
+        android:padding="16dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="32dp"
+        app:cornerRadius="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.445" />
+        app:layout_constraintStart_toStartOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

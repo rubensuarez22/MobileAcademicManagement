@@ -6,6 +6,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.project.dataAplication.Companion.prefs
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -30,7 +31,7 @@ class Registry : AppCompatActivity() {
         val Matricula = findViewById<EditText>(R.id.Matricula)
         val Facultad = findViewById<EditText>(R.id.Facultad)
         val Sexo = findViewById<EditText>(R.id.Sexo)
-        val btnSave = findViewById<Button>(R.id.btnentrar) // Botón para guardar datos
+        val btnSave = findViewById<Button>(R.id.btnSave) // Botón para guardar datos
 
         // Obtener el usuario actualmente autenticado en Firebase
         val user = auth.currentUser
@@ -73,7 +74,16 @@ class Registry : AppCompatActivity() {
         db.collection("users").document(userId).set(user)
             .addOnSuccessListener {
                 Toast.makeText(this, "Datos guardados exitosamente", Toast.LENGTH_SHORT).show()
+
+                // --- Guardar en SharedPreferences después del registro ---
+                prefs.saveNombre(name)
+                prefs.saveApellido(apellido)
+                prefs.saveMatricula(matricula)
+                prefs.saveRol(rol)
+                // --- Fin de guardado en SharedPreferences ---
             }
+
+
             .addOnFailureListener {
                 Toast.makeText(this, "Error al guardar", Toast.LENGTH_SHORT).show()
             }
