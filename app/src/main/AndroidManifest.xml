@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <application
+        android:name=".dataAplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -13,8 +14,11 @@
         android:theme="@style/Theme.Project"
         tools:targetApi="31">
         <activity
+            android:name=".ModifySubjects"
+            android:exported="false" />
+        <activity
             android:name=".Registry"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".AddStudets"
             android:exported="false" />

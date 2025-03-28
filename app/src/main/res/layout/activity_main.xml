@@ -6,60 +6,92 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-    android:layout_margin="10dp">
+    android:background="#56B4B8" android:padding="24dp"> <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Log In"
+        android:textSize="32sp"
+        android:textColor="@android:color/white"
+        android:fontFamily="@font/josefin_sans_regular"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="24dp" />
+
+    <EditText
+        android:id="@+id/etEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textEmailAddress"
+        android:background="@drawable/rounded_edittext_teal_border"
+        android:hint="E-mail"
+        android:padding="14dp"
+        android:textColor="@android:color/black"
+        android:textColorHint="#56B4B8" android:fontFamily="@font/josefin_sans_regular"
+        android:layout_marginBottom="16dp" />
+
+    <EditText
+        android:id="@+id/etPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Password"
+        android:inputType="textPassword"
+        android:background="@drawable/rounded_edittext_teal_border" android:padding="14dp"
+        android:textColor="@android:color/black"
+        android:textColorHint="#56B4B8"
+        android:fontFamily="@font/josefin_sans_regular"
+        android:layout_marginBottom="24dp" />
+
+    <CheckBox
+        android:id="@+id/cbRemember"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Remember me"
+        android:textColor="@android:color/white"
+        android:fontFamily="@font/josefin_sans_regular"
+        android:layout_marginBottom="24dp" />
 
     <LinearLayout
-        android:layout_width="392dp"
-        android:layout_height="201dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.148">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/etEmail"
-            android:layout_width="match_parent"
+        <Button
+            android:id="@+id/btnLogIn"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="E-mail"
-            android:inputType="textEmailAddress" />
+            android:layout_weight="1"
+            android:text="Log In"
+            android:textSize="18sp"
+            android:textColor="#56B4B8"
+            android:background="@drawable/rounded_button_white_teal_border" android:padding="14dp"
+            app:backgroundTint="@null"
+            android:fontFamily="@font/josefin_sans_regular"
+            android:layout_marginEnd="8dp" />
 
-        <EditText
-            android:id="@+id/etPassword"
-            android:layout_width="match_parent"
+        <Button
+            android:id="@+id/btnRegister"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Password"
-            android:inputType="textPassword" />
-
-        <CheckBox
-            android:id="@+id/cbRemember"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Remember me" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/btnLogIn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="log in" />
-
-            <Button
-                android:id="@+id/btnRegister"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Register" />
-        </LinearLayout>
-
+            android:layout_weight="1"
+            android:text="Register"
+            android:textSize="18sp"
+            android:textColor="@android:color/white"
+            android:background="@drawable/button_border_only" android:padding="14dp"
+            app:backgroundTint="@null"
+            android:fontFamily="@font/josefin_sans_regular"
+            android:layout_marginStart="8dp" />
     </LinearLayout>
+
+</LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
