@@ -44,8 +44,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-
-
         // Botón para registrar un nuevo usuario
         btnRegister.setOnClickListener {
             // Se convierten en String los apartados de email y contraseña
@@ -69,6 +67,7 @@ class MainActivity : AppCompatActivity() {
                 "0" -> goToStudentMain()
                 "1" -> goToTeacherMain()
                 "2" -> goToAdminMain()
+                else -> Toast.makeText(this, "Rol no válido o no encontrado", Toast.LENGTH_SHORT).show()
             }
         }
     }

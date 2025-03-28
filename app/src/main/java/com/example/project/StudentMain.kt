@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,7 +19,8 @@ class StudentMain : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: ClassAdapter
     private lateinit var classList: ArrayList<ClassItem>
-    private lateinit var btnLogout: Button
+    private lateinit var logoutImage: ImageView
+    private lateinit var ScanQr: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,13 +37,18 @@ class StudentMain : AppCompatActivity() {
         adapter = ClassAdapter(classList)
         recyclerView.adapter = adapter
 
-        btnLogout = findViewById(R.id.btnLogout)
-        btnLogout.setOnClickListener {
+        logoutImage = findViewById(R.id.LogOutImage)
+        logoutImage.setOnClickListener {
             auth.signOut() // Cerrar sesión en Firebase
             prefs.wipe() // Borrar datos de SharedPreferences
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
             finish()
+        }
+
+        ScanQr = findViewById(R.id.btnScanQr)
+        ScanQr.setOnClickListener {
+            ImplementationQR(this).init()
         }
 
         loadEnrolledSubjects()
