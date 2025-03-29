@@ -74,7 +74,6 @@ class Registry : AppCompatActivity() {
         db.collection("users").document(userId).set(user)
             .addOnSuccessListener {
                 Toast.makeText(this, "Datos guardados exitosamente", Toast.LENGTH_SHORT).show()
-
                 // --- Guardar en SharedPreferences después del registro ---
                 prefs.saveNombre(name)
                 prefs.saveApellido(apellido)
@@ -82,8 +81,6 @@ class Registry : AppCompatActivity() {
                 prefs.saveRol(rol)
                 // --- Fin de guardado en SharedPreferences ---
             }
-
-
             .addOnFailureListener {
                 Toast.makeText(this, "Error al guardar", Toast.LENGTH_SHORT).show()
             }
