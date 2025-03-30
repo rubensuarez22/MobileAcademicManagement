@@ -46,17 +46,34 @@
             android:padding="12dp"
             android:layout_marginBottom="8dp" />
 
-        <EditText
-            android:id="@+id/etDescription"
+        <TextView
+            android:id="@+id/tvSelectedDays"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Description"
-            android:fontFamily="@font/josefin_sans_regular"
-            android:gravity="top|start"
-            android:minLines="3"
+            android:layout_marginBottom="16dp"
             android:background="@drawable/rounded_edittext"
+            android:fontFamily="@font/josefin_sans_regular"
+            android:hint="Select Days"
             android:padding="12dp"
-            android:layout_marginBottom="16dp" />
+            android:textColor="@android:color/black"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/tvTimeHint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Select Class Time"
+            android:textSize="16sp"
+            android:textColor="@android:color/black"
+            android:fontFamily="@font/josefin_sans_regular"
+            android:layout_marginBottom="4dp" />
+
+        <TimePicker
+            android:id="@+id/timePicker"
+            android:layout_width="match_parent"
+            android:layout_height="143dp"
+            android:layout_marginBottom="16dp"
+            android:timePickerMode="spinner" />
 
         <TextView
             android:layout_width="wrap_content"
