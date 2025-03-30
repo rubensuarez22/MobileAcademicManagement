@@ -25,7 +25,7 @@
             android:layout_marginBottom="4dp" />
 
         <TextView
-            android:id="@+id/tvGrade"
+            android:id="@+id/tvTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Grade : A"
@@ -35,7 +35,7 @@
             android:layout_marginBottom="8dp" />
 
         <TextView
-            android:id="@+id/tvDescription"
+            android:id="@+id/tvGrade"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Excellent performance in exams"

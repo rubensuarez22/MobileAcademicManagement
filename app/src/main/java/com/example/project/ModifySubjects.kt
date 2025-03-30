@@ -43,7 +43,7 @@ class ModifySubjects : AppCompatActivity(), OnEditSubjectClickListener, OnDelete
     private val db = FirebaseFirestore.getInstance()
     private var editingSubjectId: String? = null // Para rastrear la asignatura que se está editando
 
-    private val days = arrayOf("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
+    private val days = arrayOf("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday")
     private val selectedDays = BooleanArray(days.size)
     private val selectedList = mutableListOf<String>()
 
