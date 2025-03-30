@@ -18,12 +18,7 @@ class ClassAdapter(private val classList: List<ClassItem>) : RecyclerView.Adapte
         val currentItem = classList[position]
         holder.classNameTextView.text = currentItem.name
         holder.gradeTextView.text = currentItem.grade
-        holder.descriptionTextView.text = currentItem.description
-
-        // Aquí puedes agregar la lógica para el botón "Scan Attendance" si es necesario
-        holder.scanAttendanceButton.setOnClickListener {
-            // Handle click event
-        }
+        holder.timeTextView.text = currentItem.time
     }
 
     override fun getItemCount() = classList.size
@@ -31,7 +26,6 @@ class ClassAdapter(private val classList: List<ClassItem>) : RecyclerView.Adapte
     class ClassViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val classNameTextView: TextView = itemView.findViewById(R.id.tvClassName)
         val gradeTextView: TextView = itemView.findViewById(R.id.tvGrade)
-        val descriptionTextView: TextView = itemView.findViewById(R.id.tvDescription)
-        val scanAttendanceButton: Button = itemView.findViewById(R.id.btnScanAttendance)
+        val timeTextView: TextView = itemView.findViewById(R.id.tvTime)
     }
 }

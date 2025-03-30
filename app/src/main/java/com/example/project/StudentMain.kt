@@ -3,7 +3,12 @@ package com.example.project
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.ImageView
+import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,7 +23,11 @@ class StudentMain : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: ClassAdapter
     private lateinit var classList: ArrayList<ClassItem>
-    private lateinit var btnLogout: Button
+    private lateinit var logoutImage: ImageView
+    private lateinit var ScanQr: Button
+    private lateinit var daySpinner: Spinner
+
+    private val daysOfWeek = arrayOf("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,8 +44,8 @@ class StudentMain : AppCompatActivity() {
         adapter = ClassAdapter(classList)
         recyclerView.adapter = adapter
 
-        btnLogout = findViewById(R.id.btnLogout)
-        btnLogout.setOnClickListener {
+        logoutImage = findViewById(R.id.LogOutImage)
+        logoutImage.setOnClickListener {
             auth.signOut() // Cerrar sesión en Firebase
             prefs.wipe() // Borrar datos de SharedPreferences
             val intent = Intent(this, MainActivity::class.java)
@@ -44,10 +53,36 @@ class StudentMain : AppCompatActivity() {
             finish()
         }
 
-        loadEnrolledSubjects()
+        ScanQr = findViewById(R.id.btnScanQr)
+        ScanQr.setOnClickListener {
+            ImplementationQR(this).init()
+        }
+
+        daySpinner = findViewById(R.id.dayspinner)
+        setupDaySpinner()
+
+        // Default load for the first day (optional)
+        loadEnrolledSubjects(selectedDay = daysOfWeek[0])
     }
 
-    private fun loadEnrolledSubjects() {
+    private fun setupDaySpinner() {
+        val adapterSpinner = ArrayAdapter(this, android.R.layout.simple_spinner_item, daysOfWeek)
+        adapterSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        daySpinner.adapter = adapterSpinner
+
+        daySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                val selectedDay = daysOfWeek[position]
+                loadEnrolledSubjects(selectedDay)
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                // Optional: do nothing
+            }
+        }
+    }
+
+    private fun loadEnrolledSubjects(selectedDay: String) {
         val currentUser = auth.currentUser
         currentUser?.let { user ->
             val userId = user.uid
@@ -58,11 +93,14 @@ class StudentMain : AppCompatActivity() {
                 .addOnSuccessListener { querySnapshot ->
                     classList.clear()
                     for (document in querySnapshot) {
-                        val className = document.getString("name") ?: ""
-                        val description = document.getString("description") ?: ""
-                        val grade = ""
-                        val classItem = ClassItem(className, grade, description)
-                        classList.add(classItem)
+                        val classDays = document.get("days") as? List<String> ?: emptyList()
+                        if (classDays.contains(selectedDay)) {
+                            val className = document.getString("name") ?: ""
+                            val time = document.getString("time") ?: ""
+                            val grade = ""
+                            val classItem = ClassItem(className, grade, time)
+                            classList.add(classItem)
+                        }
                     }
                     adapter.notifyDataSetChanged()
                 }

@@ -25,7 +25,7 @@
             android:layout_marginBottom="4dp" />
 
         <TextView
-            android:id="@+id/tvGrade"
+            android:id="@+id/tvTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Grade : A"
@@ -35,7 +35,7 @@
             android:layout_marginBottom="8dp" />
 
         <TextView
-            android:id="@+id/tvDescription"
+            android:id="@+id/tvGrade"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Excellent performance in exams"
@@ -43,18 +43,6 @@
             android:textColor="#757575"
             android:fontFamily="@font/josefin_sans_regular"
             android:layout_marginBottom="16dp" />
-
-        <Button
-            android:id="@+id/btnScanAttendance"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Scan Attendance"
-            android:textSize="12sp"
-            android:textColor="#56B4B8"
-            android:background="@drawable/button_border_only_teal"
-            app:backgroundTint="@null"
-            android:fontFamily="@font/josefin_sans_regular"
-            app:cornerRadius="8dp" />
 
     </LinearLayout>
 
