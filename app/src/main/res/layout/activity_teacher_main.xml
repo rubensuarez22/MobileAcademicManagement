@@ -6,67 +6,121 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".TeacherMain"
-    android:layout_margin="10dp">
-
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="42dp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.06">
-
-        <Button
-            android:id="@+id/btnGradesTeacher"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Grades" />
-
-        <Button
-            android:id="@+id/btnQRTeacher"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="QR " />
-    </LinearLayout>
-
-    <Spinner
-        android:id="@+id/spinner"
-        android:layout_width="match_parent"
-        android:layout_height="37dp"
-        android:entries="@array/opciones_spinner"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.148" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="393dp"
-        android:layout_height="371dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.427" />
+    android:background="#56B4B8"
+    android:padding="24dp">
 
     <Button
         android:id="@+id/btnLogOutTeacher"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="log out"
+        android:text="Log Out"
+        android:textSize="18sp"
+        android:textColor="@android:color/white"
+        android:background="@drawable/button_border_only"
+        android:padding="10dp"
+        android:fontFamily="@font/josefin_sans_regular"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="600dp"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.842" />
+        app:layout_constraintVertical_bias="0.064">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/button5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/rounded_button_white_teal_border"
+                android:fontFamily="@font/josefin_sans_regular"
+                android:padding="10dp"
+                android:text="Grades"
+                android:textColor="#56B4B8"
+                android:textSize="18sp" />
+
+            <Button
+                android:id="@+id/button6"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/rounded_button_white_teal_border"
+                android:fontFamily="@font/josefin_sans_regular"
+                android:padding="10dp"
+                android:text="QR"
+                android:textColor="#56B4B8"
+                android:textSize="18sp" />
+
+            <Button
+                android:id="@+id/button7"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/rounded_button_white_teal_border"
+                android:fontFamily="@font/josefin_sans_regular"
+                android:padding="10dp"
+                android:text="Assistance"
+                android:textColor="#56B4B8"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/josefin_sans_regular"
+            android:text="Class"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
+
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_edittext_teal_border"
+            android:padding="10dp" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/josefin_sans_regular"
+            android:text="Schedule"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
+
+        <Spinner
+            android:id="@+id/spinner3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_edittext_teal_border"
+            android:padding="10dp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="16dp"
+            android:layout_weight="1"
+            android:background="#FFFFFF"
+            android:elevation="4dp"
+            android:padding="8dp" />
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

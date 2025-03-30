@@ -1,43 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="6dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="10dp">
+    android:layout_margin="10dp"
+    android:background="#FDFDFD">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="89dp"
-        android:orientation="horizontal">
+        android:layout_height="166dp"
+        android:orientation="horizontal"
+        android:padding="16dp">
 
         <LinearLayout
-            android:layout_width="305dp"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_weight="3"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/textView20"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/josefin_sans_regular"
                 android:text="Name Student"
-                android:textSize="30sp" />
+                android:textColor="#56B4B8"
+                android:textSize="30sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/textView21"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="175339" />
+                android:fontFamily="@font/josefin_sans_regular"
+                android:text="175339"
+                android:textColor="#000000"
+                android:textSize="18sp" />
+
+            <Button
+                android:id="@+id/button3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button_border_only"
+                android:fontFamily="@font/josefin_sans_regular"
+                android:padding="10dp"
+                android:text="Assign Grade"
+                android:textColor="@color/teal_200"
+                android:textSize="18sp" />
         </LinearLayout>
 
-        <EditText
-            android:id="@+id/editTextNumberSigned"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:ems="10"
-            android:hint="0"
-            android:inputType="numberSigned"
-            android:textAlignment="center"
-            android:textSize="34sp" />
+            android:gravity="center"
+            android:orientation="vertical">
 
+            <TextView
+                android:id="@+id/textViewEnterGrade"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:fontFamily="@font/josefin_sans_regular"
+                android:text="Enter Grade"
+                android:textColor="#56B4B8"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/editTextNumberSigned"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_edittext_teal_border"
+                android:ems="10"
+                android:fontFamily="@font/josefin_sans_regular"
+                android:hint="0"
+                android:inputType="numberSigned"
+                android:padding="10dp"
+                android:textAlignment="center"
+                android:textColor="#000000"
+                android:textSize="34sp" />
+        </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>
