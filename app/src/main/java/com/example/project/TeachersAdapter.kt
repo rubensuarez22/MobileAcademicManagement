@@ -16,7 +16,8 @@ class TeachersAdapter(private val teachersList: List<User>) : RecyclerView.Adapt
 
     override fun onBindViewHolder(holder: TeacherViewHolder, position: Int) {
         val teacher = teachersList[position]
-        holder.bind(teacher) { isChecked ->
+        val isSelected = selectedTeachers.contains(teacher.userId)
+        holder.bind(teacher, isSelected) { isChecked ->
             if (isChecked) {
                 teacher.userId?.let { selectedTeachers.add(it) }
             } else {
@@ -34,5 +35,11 @@ class TeachersAdapter(private val teachersList: List<User>) : RecyclerView.Adapt
     fun clearSelections() {
         selectedTeachers.clear()
         notifyDataSetChanged() // Para que se desmarquen los checkboxes en la UI
+    }
+
+    fun selectTeacher(position: Int) {
+        val teacher = teachersList.getOrNull(position) ?: return
+        teacher.userId?.let { selectedTeachers.add(it) }
+        notifyItemChanged(position)
     }
 }
