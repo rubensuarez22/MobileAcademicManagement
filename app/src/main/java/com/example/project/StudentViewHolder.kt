@@ -11,12 +11,13 @@ class StudentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     private lateinit var currentStudent: User
 
-    fun bind(student: User, onItemSelected: (Boolean) -> Unit) {
+    fun bind(student: User, isSelected: Boolean, onItemSelected: (Boolean) -> Unit) {
         currentStudent = student
         textViewStudentName.text = student.name
+        checkBoxStudent.setOnCheckedChangeListener(null) // Avoid unwanted triggers when recycling
+        checkBoxStudent.isChecked = isSelected // <-- Pre-select if needed
         checkBoxStudent.setOnCheckedChangeListener { _, isChecked ->
             onItemSelected(isChecked)
         }
-        checkBoxStudent.isChecked = false // Asegurarse de que estén desmarcados al principio
     }
 }

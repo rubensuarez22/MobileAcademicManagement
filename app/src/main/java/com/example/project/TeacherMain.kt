@@ -16,11 +16,6 @@ class TeacherMain : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_teacher_main)
         auth = FirebaseAuth.getInstance() // Inicializa FirebaseAuth
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
 
         val btnLogOut = findViewById<Button>(R.id.btnLogOutTeacher)
         btnLogOut.setOnClickListener {

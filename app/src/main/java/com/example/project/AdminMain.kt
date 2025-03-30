@@ -18,16 +18,9 @@ class AdminMain : AppCompatActivity() {
         // Inicializar Firebase Authentication
         auth = FirebaseAuth.getInstance()
 
-        val btnSubjectManagement = findViewById<Button>(R.id.btnSubjectManagement) // Renombrado para mayor claridad
-        val btnUserManagement = findViewById<Button>(R.id.btnUserManagement) // Renombrado para mayor claridad
+        val btnSubjectManagement = findViewById<Button>(R.id.btnSubjectManagement)
+        val btnUserManagement = findViewById<Button>(R.id.btnUserManagement)
         val btnLogout = findViewById<Button>(R.id.btnlo) // Usando el ID correcto del botón Log Out
-
-        // **Comentando la funcionalidad del botón "Add Student" ya que no aparece en el diseño reciente**
-        // val addStudent = findViewById<Button>(R.id.btnAddStudent)
-        // addStudent.setOnClickListener {
-        //     val intent = Intent(this, AddStudets::class.java)
-        //     startActivity(intent)
-        // }
 
         // Botón para Gestión de Asignaturas
         btnSubjectManagement.text = "Subject Management"

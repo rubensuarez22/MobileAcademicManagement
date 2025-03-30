@@ -4,12 +4,11 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
+import android.widget.TimePicker
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
@@ -26,7 +25,8 @@ class ModifySubjects : AppCompatActivity(), OnEditSubjectClickListener, OnDelete
 
     private lateinit var etSubjectName: EditText
     private lateinit var etSubjectCode: EditText
-    private lateinit var etDescription: EditText
+    private lateinit var tvSelectedDays: TextView
+    private lateinit var timePicker: TimePicker
     private lateinit var rvAssignTeachers: RecyclerView
     private lateinit var rvEnrollStudents: RecyclerView
     private lateinit var rvExistingSubjects: RecyclerView
@@ -43,24 +43,22 @@ class ModifySubjects : AppCompatActivity(), OnEditSubjectClickListener, OnDelete
     private val db = FirebaseFirestore.getInstance()
     private var editingSubjectId: String? = null // Para rastrear la asignatura que se está editando
 
+    private val days = arrayOf("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
+    private val selectedDays = BooleanArray(days.size)
+    private val selectedList = mutableListOf<String>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_modify_subjects)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
 
         etSubjectName = findViewById(R.id.etSubjectName)
         etSubjectCode = findViewById(R.id.etSubjectCode)
-        etDescription = findViewById(R.id.etDescription)
+        tvSelectedDays = findViewById(R.id.tvSelectedDays)
+        timePicker = findViewById(R.id.timePicker)
         rvAssignTeachers = findViewById(R.id.rvAssignTeachers)
         rvEnrollStudents = findViewById(R.id.rvEnrollStudents)
         rvExistingSubjects = findViewById(R.id.rvExistingSubjects)
         btnAddSubject = findViewById(R.id.btnAddSubject)
-        btnAddSubject.text = "Add Subject" // Establecer el texto inicial del botón
 
         rvAssignTeachers.layoutManager = LinearLayoutManager(this)
         rvEnrollStudents.layoutManager = LinearLayoutManager(this)
@@ -78,9 +76,35 @@ class ModifySubjects : AppCompatActivity(), OnEditSubjectClickListener, OnDelete
         loadStudentsFromFirebase()
         loadExistingSubjectsFromFirebase()
 
+        tvSelectedDays.setOnClickListener {
+            showDaySelectionDialog()
+        }
+
         btnAddSubject.setOnClickListener {
             saveOrUpdateSubject()
         }
+    }
+
+    private fun showDaySelectionDialog() {
+        AlertDialog.Builder(this)
+            .setTitle("Select your 2 days of class")
+            .setMultiChoiceItems(days, selectedDays) { dialog, which, isChecked ->
+                if (isChecked) {
+                    if (selectedList.size < 2) {
+                        selectedList.add(days[which])
+                    } else {
+                        (dialog as AlertDialog).listView.setItemChecked(which, false)
+                        Toast.makeText(this, "Only two days can be selected", Toast.LENGTH_SHORT).show()
+                    }
+                } else {
+                    selectedList.remove(days[which])
+                }
+            }
+            .setPositiveButton("OK") { _, _ ->
+                tvSelectedDays.text = selectedList.joinToString(", ")
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
     }
 
     private fun loadTeachersFromFirebase() {
@@ -132,14 +156,17 @@ class ModifySubjects : AppCompatActivity(), OnEditSubjectClickListener, OnDelete
             .addOnSuccessListener { result ->
                 subjectsList.clear()
                 for (document in result) {
-                    val subjectName = document.getString("name") ?: "Nombre no encontrado" // Obtén el nombre
+                    val subjectName = document.getString("name") ?: "Nombre no encontrado"
                     val subject = Subject(
                         name = subjectName,
                         code = document.getString("code") ?: "",
-                        description = document.getString("description") ?: "",
+                        days = document.get("days") as? List<String> ?: emptyList(),
+                        time = document.getString("time") ?: "",
+                        assignedTeachers = document.get("assignedTeachers") as? List<String> ?: emptyList(),
+                        enrolledStudents = document.get("enrolledStudents") as? List<String> ?: emptyList(),
                         subjectId = document.id
                     )
-                    Log.d("FirebaseData", "Subject Name: $subjectName") // Agrega este log
+                    Log.d("FirebaseData", "Subject Name: $subjectName, Days: ${subject.days}, Time: ${subject.time}, Teachers: ${subject.assignedTeachers}, Students: ${subject.enrolledStudents}")
                     subjectsList.add(subject)
                 }
                 subjectsAdapter.notifyDataSetChanged()
@@ -152,24 +179,24 @@ class ModifySubjects : AppCompatActivity(), OnEditSubjectClickListener, OnDelete
     private fun saveOrUpdateSubject() {
         val subjectName = etSubjectName.text.toString()
         val subjectCode = etSubjectCode.text.toString()
-        val description = etDescription.text.toString()
 
         val selectedTeacherIds = teachersAdapter.getSelectedTeacherIds().toList()
         val selectedStudentIds = studentsAdapter.getSelectedStudentIds().toList()
 
-        if (subjectName.isNotBlank() && subjectCode.isNotBlank()) {
+        val time = "${timePicker.hour}:${String.format("%02d", timePicker.minute)}"
+
+        if (subjectName.isNotBlank() && subjectCode.isNotBlank() && selectedList.isNotEmpty()) {
             val subjectData = hashMapOf(
                 "name" to subjectName,
                 "code" to subjectCode,
-                "description" to description,
+                "days" to selectedList,
+                "time" to time,
                 "assignedTeachers" to selectedTeacherIds,
                 "enrolledStudents" to selectedStudentIds
             )
 
             if (editingSubjectId != null) {
-                // Editar asignatura existente
-                db.collection("subjects")
-                    .document(editingSubjectId!!)
+                db.collection("subjects").document(editingSubjectId!!)
                     .update(subjectData as Map<String, Any>)
                     .addOnSuccessListener {
                         Toast.makeText(this, "Subject updated successfully", Toast.LENGTH_SHORT).show()
@@ -182,10 +209,8 @@ class ModifySubjects : AppCompatActivity(), OnEditSubjectClickListener, OnDelete
                         Toast.makeText(this, "Error updating subject: ${e.message}", Toast.LENGTH_SHORT).show()
                     }
             } else {
-                // Añadir nueva asignatura
-                db.collection("subjects")
-                    .add(subjectData)
-                    .addOnSuccessListener { documentReference ->
+                db.collection("subjects").add(subjectData)
+                    .addOnSuccessListener {
                         Toast.makeText(this, "Subject added successfully", Toast.LENGTH_SHORT).show()
                         clearInputFieldsAndSelections()
                         loadExistingSubjectsFromFirebase()
@@ -195,14 +220,16 @@ class ModifySubjects : AppCompatActivity(), OnEditSubjectClickListener, OnDelete
                     }
             }
         } else {
-            Toast.makeText(this, "Subject Name and Code are required", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Name, Code, and at least one day are required", Toast.LENGTH_SHORT).show()
         }
     }
 
     private fun clearInputFieldsAndSelections() {
         etSubjectName.text.clear()
         etSubjectCode.text.clear()
-        etDescription.text.clear()
+        selectedList.clear()
+        selectedDays.fill(false)
+        tvSelectedDays.text = ""
         teachersAdapter.clearSelections()
         studentsAdapter.clearSelections()
     }
@@ -211,11 +238,57 @@ class ModifySubjects : AppCompatActivity(), OnEditSubjectClickListener, OnDelete
         editingSubjectId = subject.subjectId
         etSubjectName.setText(subject.name)
         etSubjectCode.setText(subject.code)
-        etDescription.setText(subject.description)
+
+        // Restore selected days
+        selectedList.clear()
+        selectedDays.fill(false)
+        val daysFromSubject = subject.days ?: listOf()
+        for ((index, day) in days.withIndex()) {
+            if (daysFromSubject.contains(day)) {
+                selectedDays[index] = true
+                selectedList.add(day)
+            }
+        }
+        tvSelectedDays.text = selectedList.joinToString(", ")
+
+        // Restore time
+        val timeParts = subject.time?.split(":") // time is saved like "14:30"
+        if (timeParts?.size == 2) {
+            val hour = timeParts[0].toIntOrNull() ?: 0
+            val minute = timeParts[1].toIntOrNull() ?: 0
+            timePicker.hour = hour
+            timePicker.minute = minute
+        }
+
         btnAddSubject.text = "Update Subject"
 
-        // Aquí podrías implementar la lógica para pre-seleccionar los profesores y estudiantes
-        // asignados a esta asignatura si los guardaste en el documento.
+        // ✅ Pre-seleccionar profesores
+        teachersAdapter.clearSelections()
+        Log.d("PreSelect", "Assigned Teachers IDs: ${subject.assignedTeachers}")
+        Log.d("PreSelect", "Available Teachers IDs: ${teachersList.map { it.userId }}")
+        subject.assignedTeachers?.let { assigned ->
+            for (i in teachersList.indices) {
+                val teacherId = teachersList[i].userId
+                if (assigned.contains(teacherId)) {
+                    Log.d("PreSelect", "Selecting Teacher at index $i with ID: $teacherId")
+                    teachersAdapter.selectTeacher(i)
+                }
+            }
+        }
+
+        // ✅ Pre-seleccionar estudiantes
+        studentsAdapter.clearSelections()
+        Log.d("PreSelect", "Enrolled Students IDs: ${subject.enrolledStudents}")
+        Log.d("PreSelect", "Available Students IDs: ${studentsList.map { it.userId }}")
+        subject.enrolledStudents?.let { enrolled ->
+            for (i in studentsList.indices) {
+                val studentId = studentsList[i].userId
+                if (enrolled.contains(studentId)) {
+                    Log.d("PreSelect", "Selecting Student at index $i with ID: $studentId")
+                    studentsAdapter.selectStudent(i)
+                }
+            }
+        }
     }
 
     override fun onDeleteClick(subjectId: String) {
