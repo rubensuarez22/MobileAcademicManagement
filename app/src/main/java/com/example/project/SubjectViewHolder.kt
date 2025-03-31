@@ -22,8 +22,10 @@ class SubjectViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         }
 
         imageViewDelete.setOnClickListener {
-            subject.subjectId?.let { id ->
-                deleteClickListener.onDeleteClick(id)
+            val id = subject.subjectId
+            val name = subject.name
+            if (id != null) {
+                deleteClickListener.onDeleteClick(id, name)
             }
         }
     }

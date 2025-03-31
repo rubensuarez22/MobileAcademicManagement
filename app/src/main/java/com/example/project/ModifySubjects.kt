@@ -18,7 +18,7 @@ interface OnEditSubjectClickListener {
 }
 
 interface OnDeleteSubjectClickListener {
-    fun onDeleteClick(subjectId: String)
+    fun onDeleteClick(subjectId: String, subjectName : String)
 }
 
 class ModifySubjects : AppCompatActivity(), OnEditSubjectClickListener, OnDeleteSubjectClickListener {
@@ -291,10 +291,10 @@ class ModifySubjects : AppCompatActivity(), OnEditSubjectClickListener, OnDelete
         }
     }
 
-    override fun onDeleteClick(subjectId: String) {
+    override fun onDeleteClick(subjectId: String, subjectName: String) {
         AlertDialog.Builder(this)
             .setTitle("Confirm Delete")
-            .setMessage("Are you sure you want to delete this subject?")
+            .setMessage("Are you sure you want to delete the subject '$subjectName'?")
             .setPositiveButton("Delete") { dialog, which ->
                 deleteSubjectFromFirebase(subjectId)
             }

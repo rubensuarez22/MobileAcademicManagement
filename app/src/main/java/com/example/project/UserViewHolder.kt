@@ -1,5 +1,6 @@
 package com.example.project
 
+import android.app.AlertDialog
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
@@ -20,22 +21,20 @@ class UserViewHolder(view: View, private val adapter: UserAdapter) : RecyclerVie
     private lateinit var currentUser: User
 
     fun bind(user: User) {
-        currentUser = user // Guardamos el usuario actual para usarlo en los listeners
+        currentUser = user
 
         userNameTextView.text = user.name
         updateRoleTextView(user.role)
 
-        // Por ahora no cargamos imágenes
-
         btnSetTeacherRole.setOnClickListener {
             currentUser.userId?.let { userId ->
-                updateUserRole(userId, "1") // 1 para Teacher
+                showRoleConfirmationDialog(userId, "1", "Teacher")
             }
         }
 
         btnSetStudentRole.setOnClickListener {
             currentUser.userId?.let { userId ->
-                updateUserRole(userId, "0") // 0 student
+                showRoleConfirmationDialog(userId, "0", "Student")
             }
         }
     }
@@ -49,23 +48,33 @@ class UserViewHolder(view: View, private val adapter: UserAdapter) : RecyclerVie
         }
     }
 
+    // ✅ Confirmation Dialog
+    private fun showRoleConfirmationDialog(userId: String, newRole: String, roleName: String) {
+        AlertDialog.Builder(itemView.context)
+            .setTitle("Change Role")
+            .setMessage("Are you sure you want to set ${currentUser.name} as $roleName?")
+            .setPositiveButton("Yes") { _, _ ->
+                updateUserRole(userId, newRole)
+            }
+            .setNegativeButton("No", null)
+            .show()
+    }
+
     private fun updateUserRole(userId: String, newRole: String) {
-        db.collection("users") // Asegúrate de que tu colección de usuarios se llama "users"
+        db.collection("users")
             .document(userId)
             .update("rol", newRole)
             .addOnSuccessListener {
-                // Actualizar la lista local y notificar al adapter
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
                     val user = adapter.userList[position]
                     user.role = newRole
                     adapter.notifyItemChanged(position)
                 }
-                println("Rol de usuario actualizado a $newRole")
+                println("User role updated to $newRole")
             }
             .addOnFailureListener { e ->
-                println("Error al actualizar el rol del usuario: $e")
-                // Puedes mostrar un mensaje de error al usuario
+                println("Error updating user role: $e")
             }
     }
 }
