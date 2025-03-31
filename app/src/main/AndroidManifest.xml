@@ -29,9 +29,6 @@
             android:name=".AdminMain"
             android:exported="false" />
         <activity
-            android:name=".GradesStudent"
-            android:exported="false" />
-        <activity
             android:name=".StudentMain"
             android:exported="false" />
         <activity
