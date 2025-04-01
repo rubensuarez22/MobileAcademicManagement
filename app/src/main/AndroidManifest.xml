@@ -20,22 +20,13 @@
             android:name=".Registry"
             android:exported="false" />
         <activity
-            android:name=".AddStudets"
-            android:exported="false" />
-        <activity
             android:name=".TeacherMain"
-            android:exported="false" />
-        <activity
-            android:name=".CreateNewClass"
             android:exported="false" />
         <activity
             android:name=".ModifyUsers"
             android:exported="false" />
         <activity
             android:name=".AdminMain"
-            android:exported="false" />
-        <activity
-            android:name=".GradesStudent"
             android:exported="false" />
         <activity
             android:name=".StudentMain"
