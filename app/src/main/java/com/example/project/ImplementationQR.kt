@@ -6,6 +6,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.common.moduleinstall.ModuleInstall
 import com.google.android.gms.common.moduleinstall.ModuleInstallRequest
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.mlkit.vision.barcode.common.Barcode
 import com.google.mlkit.vision.codescanner.GmsBarcodeScanner
 import com.google.mlkit.vision.codescanner.GmsBarcodeScannerOptions
@@ -14,11 +16,9 @@ import com.google.mlkit.vision.codescanner.GmsBarcodeScanning
 class ImplementationQR(private val activity: AppCompatActivity) {
 
     private lateinit var scanQrBtn: Button
-    private lateinit var scannedValueTv: TextView
     private var isScannerInstalled = false
     private lateinit var scanner: GmsBarcodeScanner
 
-    // Método de inicialización que debe llamarse desde onCreate() de la Activity
     fun init() {
         installGoogleScanner()
         initVars()
@@ -42,7 +42,6 @@ class ImplementationQR(private val activity: AppCompatActivity) {
     }
 
     private fun initVars() {
-        // Asegúrate de que en el layout de la Activity existan las vistas con estos IDs
         scanQrBtn = activity.findViewById(R.id.btnScanQr)
 
         val options = initializeGoogleScanner()
@@ -68,17 +67,43 @@ class ImplementationQR(private val activity: AppCompatActivity) {
 
     private fun startScanning() {
         scanner.startScan()
-            .addOnSuccessListener {
-                val result = it.rawValue
-                result?.let { value ->
-                    scannedValueTv.text = "Scanned Value: $value"
+            .addOnSuccessListener { barcode ->
+                val result = barcode.rawValue
+                result?.let { subjectId ->
+                    val user = FirebaseAuth.getInstance().currentUser
+                    if (user != null) {
+                        val studentId = user.uid
+                        val studentName = user.displayName ?: "Estudiante"
+                        val timestamp = System.currentTimeMillis()
+
+                        val data = hashMapOf(
+                            "studentId" to studentId,
+                            "studentName" to studentName,
+                            "timestamp" to timestamp
+                        )
+
+                        val db = FirebaseFirestore.getInstance()
+                        db.collection("subjects")
+                            .document(subjectId)
+                            .collection("attendance")
+                            .document(studentId) // o usa .add(data) si quieres permitir múltiples registros
+                            .set(data)
+                            .addOnSuccessListener {
+                                Toast.makeText(activity, "¡Asistencia registrada en $subjectId!", Toast.LENGTH_SHORT).show()
+                            }
+                            .addOnFailureListener {
+                                Toast.makeText(activity, "Error al registrar asistencia", Toast.LENGTH_SHORT).show()
+                            }
+                    }
                 }
             }
             .addOnCanceledListener {
-                Toast.makeText(activity, "Cancelled", Toast.LENGTH_SHORT).show()
+                Toast.makeText(activity, "Escaneo cancelado", Toast.LENGTH_SHORT).show()
             }
             .addOnFailureListener {
                 Toast.makeText(activity, it.message, Toast.LENGTH_SHORT).show()
             }
     }
+
 }
+
