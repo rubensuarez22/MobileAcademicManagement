@@ -1,6 +1,6 @@
 package com.example.project
 
-data class dataAttendance(
+data class DataAttendance(
     val name: String,
     val time: String,
     val statusIcon: Int

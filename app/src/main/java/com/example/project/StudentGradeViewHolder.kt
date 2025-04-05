@@ -4,6 +4,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 
 class StudentGradeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -20,6 +21,8 @@ class StudentGradeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
             val gradeText = etGrade.text.toString()
             if (gradeText.isNotEmpty()) {
                 onAssignClick(student, gradeText)
+            } else {
+                Toast.makeText(itemView.context, "Ingresa una calificación", Toast.LENGTH_SHORT).show()
             }
         }
     }

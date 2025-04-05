@@ -69,31 +69,13 @@ class ImplementationQR(private val activity: AppCompatActivity) {
         scanner.startScan()
             .addOnSuccessListener { barcode ->
                 val result = barcode.rawValue
-                result?.let { subjectId ->
-                    val user = FirebaseAuth.getInstance().currentUser
-                    if (user != null) {
-                        val studentId = user.uid
-                        val studentName = user.displayName ?: "Estudiante"
-                        val timestamp = System.currentTimeMillis()
-
-                        val data = hashMapOf(
-                            "studentId" to studentId,
-                            "studentName" to studentName,
-                            "timestamp" to timestamp
-                        )
-
-                        val db = FirebaseFirestore.getInstance()
-                        db.collection("subjects")
-                            .document(subjectId)
-                            .collection("attendance")
-                            .document(studentId) // o usa .add(data) si quieres permitir múltiples registros
-                            .set(data)
-                            .addOnSuccessListener {
-                                Toast.makeText(activity, "¡Asistencia registrada en $subjectId!", Toast.LENGTH_SHORT).show()
-                            }
-                            .addOnFailureListener {
-                                Toast.makeText(activity, "Error al registrar asistencia", Toast.LENGTH_SHORT).show()
-                            }
+                result?.let { qrString ->
+                    // En lugar de registrar la asistencia aquí, delegamos la lógica a StudentMain
+                    if (activity is StudentMain) {
+                        (activity as StudentMain).handleScannedQr(qrString)
+                    } else {
+                        // En caso de que no sea StudentMain, simplemente mostramos el resultado
+                        Toast.makeText(activity, "QR escaneado: $qrString", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -104,6 +86,4 @@ class ImplementationQR(private val activity: AppCompatActivity) {
                 Toast.makeText(activity, it.message, Toast.LENGTH_SHORT).show()
             }
     }
-
 }
-

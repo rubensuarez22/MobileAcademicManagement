@@ -35,6 +35,10 @@
             android:name=".StudentMain"
             android:exported="false" />
         <activity
+            android:name=".TeacherGrades"
+            android:exported="false"/>
+
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

@@ -36,7 +36,7 @@
             android:fontFamily="@font/josefin_sans_regular" />
 
         <TextView
-            android:id="@+id/tvTime"
+            android:id="@+id/tvIdClass"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="10:00 AM"

@@ -105,14 +105,14 @@
             android:textSize="18sp" />
 
         <Spinner
-            android:id="@+id/spinner3"
+            android:id="@+id/spinnerDaysTeacher"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/rounded_edittext_teal_border"
             android:padding="10dp" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
+            android:id="@+id/rvTeacherClasses"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="16dp"

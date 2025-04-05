@@ -10,6 +10,8 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.project.dataAplication.Companion.prefs
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -23,23 +25,47 @@ class TeacherMain : AppCompatActivity() {
     private val db = FirebaseFirestore.getInstance()
     private var selectedSubjectId: String? = null
 
+    // Agregamos la variable daysOfWeek para el spinner de días
+    private val daysOfWeek = arrayOf("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday")
+
+    // Para el RecyclerView que mostrará las clases filtradas por día
+    private lateinit var rvTeacherClasses: RecyclerView
+    private val teacherClassesList = mutableListOf<ClassItem>()
+    private lateinit var teacherClassesAdapter: ClassAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_teacher_main)
         auth = FirebaseAuth.getInstance()
 
-        val btnShowQr = findViewById<Button>(R.id.button6)
-        val btnLogOut = findViewById<Button>(R.id.btnLogOutTeacher)
-        val btnAssistance = findViewById<Button>(R.id.button7)
-        val btnGrades = findViewById<Button>(R.id.button5)
-        val spiClass = findViewById<Spinner>(R.id.spinner)
-        val spiSchedule = findViewById<Spinner>(R.id.spinner3)
+        // Spinner para los días (ya definido en el layout con id spinnerDaysTeacher)
+        val spiSchedule = findViewById<Spinner>(R.id.spinnerDaysTeacher)
+        val dayAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, daysOfWeek)
+        dayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spiSchedule.adapter = dayAdapter
 
+        // Cada vez que se seleccione un día, se carga el RecyclerView con las clases de ese día
+        spiSchedule.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                val selectedDay = daysOfWeek[position]
+                loadTeacherClasses(selectedDay)
+            }
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
+
+        // Configuramos el RecyclerView para las clases filtradas
+        rvTeacherClasses = findViewById(R.id.rvTeacherClasses)
+        rvTeacherClasses.layoutManager = LinearLayoutManager(this)
+        teacherClassesAdapter = ClassAdapter(teacherClassesList)
+        rvTeacherClasses.adapter = teacherClassesAdapter
+
+        // Spinner de materias asignadas al profesor (ya existente)
+        val spiClass = findViewById<Spinner>(R.id.spinner)
         val subjectNames = mutableListOf<String>()
         val subjectIds = mutableListOf<String>()
         val currentUserId = auth.currentUser?.uid ?: ""
 
-        // 🔄 Cargar materias asignadas al profesor
+        // Cargar materias asignadas al profesor
         db.collection("subjects")
             .whereArrayContains("assignedTeachers", currentUserId)
             .get()
@@ -49,7 +75,6 @@ class TeacherMain : AppCompatActivity() {
                     subjectNames.add(name)
                     subjectIds.add(doc.id)
                 }
-
                 val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, subjectNames)
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                 spiClass.adapter = adapter
@@ -58,7 +83,6 @@ class TeacherMain : AppCompatActivity() {
                     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                         selectedSubjectId = subjectIds[position]
                     }
-
                     override fun onNothingSelected(parent: AdapterView<*>?) {
                         selectedSubjectId = null
                     }
@@ -67,6 +91,12 @@ class TeacherMain : AppCompatActivity() {
             .addOnFailureListener {
                 Toast.makeText(this, "Error cargando clases", Toast.LENGTH_SHORT).show()
             }
+
+        // Botones existentes
+        val btnShowQr = findViewById<Button>(R.id.button6)
+        val btnLogOut = findViewById<Button>(R.id.btnLogOutTeacher)
+        val btnAssistance = findViewById<Button>(R.id.button7)
+        val btnGrades = findViewById<Button>(R.id.button5)
 
         btnLogOut.setOnClickListener {
             prefs.wipe()
@@ -84,7 +114,11 @@ class TeacherMain : AppCompatActivity() {
         }
 
         btnGrades.setOnClickListener {
-            startActivity(Intent(this, TeacherGrades::class.java))
+            selectedSubjectId?.let {
+                val intent = Intent(this, TeacherGrades::class.java)
+                intent.putExtra("subjectId", it)
+                startActivity(intent)
+            } ?: Toast.makeText(this, "Selecciona una clase", Toast.LENGTH_SHORT).show()
         }
 
         btnShowQr.setOnClickListener {
@@ -92,6 +126,33 @@ class TeacherMain : AppCompatActivity() {
                 showQrDialog(it)
             } ?: Toast.makeText(this, "Selecciona una clase", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    /**
+     * Consulta Firestore para obtener las materias asignadas al profesor
+     * que se imparten en el día seleccionado y las muestra en el RecyclerView.
+     */
+    private fun loadTeacherClasses(selectedDay: String) {
+        val currentUserId = auth.currentUser?.uid ?: return
+        db.collection("subjects")
+            .whereArrayContains("assignedTeachers", currentUserId)
+            .get()
+            .addOnSuccessListener { documents ->
+                teacherClassesList.clear()
+                for (doc in documents) {
+                    val classDays = doc.get("days") as? List<String> ?: emptyList()
+                    if (classDays.contains(selectedDay)) {
+                        val className = doc.getString("name") ?: ""
+                        val time = doc.getString("time") ?: ""
+                        // En este ejemplo, usamos el campo 'grade' para mostrar un dato (puede ser el ID o dejarlo vacío)
+                        teacherClassesList.add(ClassItem(className, "", time))
+                    }
+                }
+                teacherClassesAdapter.notifyDataSetChanged()
+            }
+            .addOnFailureListener { exception ->
+                Toast.makeText(this, "Error al cargar clases: ${exception.message}", Toast.LENGTH_SHORT).show()
+            }
     }
 
     private fun showQrDialog(subjectId: String) {
@@ -139,3 +200,4 @@ class TeacherMain : AppCompatActivity() {
         }
     }
 }
+

@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
 class AttendanceAdapter(
-    private val studentsList: MutableList<Asistencia>
+    private val studentsList: MutableList<DataAttendance>
 ) : RecyclerView.Adapter<AttendanceViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AttendanceViewHolder {
