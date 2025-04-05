@@ -1,12 +1,11 @@
 package com.example.project
 
-import android.R.attr.data
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
 class AttendanceAdapter(
-    private val studentsList: List<dataAttendance>
+    private val studentsList: MutableList<DataAttendance>
 ) : RecyclerView.Adapter<AttendanceViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AttendanceViewHolder {

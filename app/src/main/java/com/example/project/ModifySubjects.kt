@@ -1,5 +1,6 @@
 package com.example.project
 
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -12,6 +13,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.gson.Gson
+import com.google.zxing.BarcodeFormat
+import com.journeyapps.barcodescanner.BarcodeEncoder
+import java.io.ByteArrayOutputStream
+import com.google.firebase.storage.FirebaseStorage
+
 
 interface OnEditSubjectClickListener {
     fun onEditClick(subject: Subject)
@@ -179,10 +186,8 @@ class ModifySubjects : AppCompatActivity(), OnEditSubjectClickListener, OnDelete
     private fun saveOrUpdateSubject() {
         val subjectName = etSubjectName.text.toString()
         val subjectCode = etSubjectCode.text.toString()
-
         val selectedTeacherIds = teachersAdapter.getSelectedTeacherIds().toList()
         val selectedStudentIds = studentsAdapter.getSelectedStudentIds().toList()
-
         val time = "${timePicker.hour}:${String.format("%02d", timePicker.minute)}"
 
         if (subjectName.isNotBlank() && subjectCode.isNotBlank() && selectedList.isNotEmpty()) {
@@ -209,8 +214,23 @@ class ModifySubjects : AppCompatActivity(), OnEditSubjectClickListener, OnDelete
                         Toast.makeText(this, "Error updating subject: ${e.message}", Toast.LENGTH_SHORT).show()
                     }
             } else {
-                db.collection("subjects").add(subjectData)
+                val newSubjectRef = db.collection("subjects").document()
+                val subjectId = newSubjectRef.id
+
+                newSubjectRef.set(subjectData)
                     .addOnSuccessListener {
+                        val qrPayload = mapOf(
+                            "subjectId" to subjectId,
+                            "timestamp" to System.currentTimeMillis(),
+                            "type" to "attendance"
+                        )
+                        val qrString = Gson().toJson(qrPayload)
+
+                        db.collection("subjects").document(subjectId).update("qrString", qrString)
+                            .addOnFailureListener { e ->
+                                Log.d("QR_DEBUG", "QR generation failed: ${e.message}")
+                            }
+
                         Toast.makeText(this, "Subject added successfully", Toast.LENGTH_SHORT).show()
                         clearInputFieldsAndSelections()
                         loadExistingSubjectsFromFirebase()
@@ -223,6 +243,7 @@ class ModifySubjects : AppCompatActivity(), OnEditSubjectClickListener, OnDelete
             Toast.makeText(this, "Name, Code, and at least one day are required", Toast.LENGTH_SHORT).show()
         }
     }
+
 
     private fun clearInputFieldsAndSelections() {
         etSubjectName.text.clear()
@@ -313,5 +334,16 @@ class ModifySubjects : AppCompatActivity(), OnEditSubjectClickListener, OnDelete
             .addOnFailureListener { e ->
                 Toast.makeText(this, "Error deleting subject: ${e.message}", Toast.LENGTH_SHORT).show()
             }
+    }
+
+    private fun generateQrCode(subject: Subject): Bitmap? {
+        val json = Gson().toJson(subject)
+        return try {
+            val barcodeEncoder = BarcodeEncoder()
+            barcodeEncoder.encodeBitmap(json, BarcodeFormat.QR_CODE, 400, 400)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
     }
 }

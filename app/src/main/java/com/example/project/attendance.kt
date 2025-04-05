@@ -1,25 +1,64 @@
 package com.example.project
 
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
+import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.firestore.FirebaseFirestore
+import java.text.SimpleDateFormat
+import java.util.*
 
 class attendance : AppCompatActivity() {
+
+    private lateinit var rvAttendance: RecyclerView
+    private lateinit var attendanceAdapter: AttendanceAdapter
+    private val attendanceList = mutableListOf<DataAttendance>()
+    private val db = FirebaseFirestore.getInstance()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_attendance)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
+
+        rvAttendance = findViewById(R.id.rvAttendance)
+        rvAttendance.layoutManager = LinearLayoutManager(this)
+
+        // Inicializamos el adapter y lo asignamos al RecyclerView
+        attendanceAdapter = AttendanceAdapter(attendanceList)
+        rvAttendance.adapter = attendanceAdapter
+
+        // Recuperamos el subjectId enviado desde TeacherMain
+        val subjectId = intent.getStringExtra("subjectId")
+        if (subjectId.isNullOrEmpty()) {
+            Toast.makeText(this, "Error: materia no encontrada", Toast.LENGTH_SHORT).show()
+            finish()
+        } else {
+            startAttendanceListener(subjectId)
         }
-
-        val rvAttendance = findViewById<RecyclerView>(R.id.rvAttendance)
-
-
     }
+
+    private fun startAttendanceListener(subjectId: String) {
+        db.collection("subjects")
+            .document(subjectId)
+            .collection("attendance")
+            .addSnapshotListener { snapshot, error ->
+                if (error != null) {
+                    Log.w("attendance", "Error al escuchar asistencia", error)
+                    return@addSnapshotListener
+                }
+                if (snapshot != null) {
+                    Log.d("attendance", "Documentos recibidos: ${snapshot.documents.size}")
+                    attendanceList.clear()
+                    for (document in snapshot.documents) {
+                        val studentName = document.getString("name") ?: "Sin nombre"
+                        val time = document.getString("time") ?: "Sin hora"
+                        val attendanceEntry = DataAttendance(studentName, time, R.drawable.ic_check)
+                        attendanceList.add(attendanceEntry)
+                    }
+                    attendanceAdapter.notifyDataSetChanged()
+                }
+            }
+    }
+
 }

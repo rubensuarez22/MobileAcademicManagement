@@ -32,6 +32,7 @@
             android:textSize="32sp" />
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvStudentGrades"
             android:layout_width="match_parent"
             android:layout_height="465dp"
             android:background="#FFFFFF"
@@ -40,7 +41,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="42dp"
             android:layout_marginTop="16dp"
             android:orientation="horizontal" />
     </LinearLayout>

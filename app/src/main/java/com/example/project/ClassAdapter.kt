@@ -3,7 +3,6 @@ package com.example.project
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
@@ -26,6 +25,6 @@ class ClassAdapter(private val classList: List<ClassItem>) : RecyclerView.Adapte
     class ClassViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val classNameTextView: TextView = itemView.findViewById(R.id.tvClassName)
         val gradeTextView: TextView = itemView.findViewById(R.id.tvGrade)
-        val timeTextView: TextView = itemView.findViewById(R.id.tvTime)
+        val timeTextView: TextView = itemView.findViewById(R.id.tvIdClass)
     }
 }
