@@ -60,7 +60,7 @@ class TeacherMain : AppCompatActivity() {
         rvTeacherClasses.adapter = teacherClassesAdapter
 
         // Spinner de materias asignadas al profesor (ya existente)
-        val spiClass = findViewById<Spinner>(R.id.spinner)
+        // val spiClass = findViewById<Spinner>(R.id.spinner)
         val subjectNames = mutableListOf<String>()
         val subjectIds = mutableListOf<String>()
         val currentUserId = auth.currentUser?.uid ?: ""
@@ -77,26 +77,26 @@ class TeacherMain : AppCompatActivity() {
                 }
                 val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, subjectNames)
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                spiClass.adapter = adapter
+//                spiClass.adapter = adapter
 
-                spiClass.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                        selectedSubjectId = subjectIds[position]
-                    }
-                    override fun onNothingSelected(parent: AdapterView<*>?) {
-                        selectedSubjectId = null
-                    }
-                }
+//                spiClass.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+//                    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+//                        selectedSubjectId = subjectIds[position]
+//                    }
+//                    override fun onNothingSelected(parent: AdapterView<*>?) {
+//                        selectedSubjectId = null
+//                    }
+//                }
             }
             .addOnFailureListener {
                 Toast.makeText(this, "Error cargando clases", Toast.LENGTH_SHORT).show()
             }
 
         // Botones existentes
-        val btnShowQr = findViewById<Button>(R.id.button6)
-        val btnLogOut = findViewById<Button>(R.id.btnLogOutTeacher)
-        val btnAssistance = findViewById<Button>(R.id.button7)
-        val btnGrades = findViewById<Button>(R.id.button5)
+//        val btnShowQr = findViewById<Button>(R.id.btnQR)
+        val btnLogOut = findViewById<ImageView>(R.id.ivLogoutTeacher)
+//        val btnAssistance = findViewById<Button>(R.id.btnAssistance)
+//        val btnGrades = findViewById<Button>(R.id.btnGrades)
 
         btnLogOut.setOnClickListener {
             prefs.wipe()
@@ -105,27 +105,27 @@ class TeacherMain : AppCompatActivity() {
             finish()
         }
 
-        btnAssistance.setOnClickListener {
-            selectedSubjectId?.let {
-                val intent = Intent(this, attendance::class.java)
-                intent.putExtra("subjectId", it)
-                startActivity(intent)
-            } ?: Toast.makeText(this, "Selecciona una clase", Toast.LENGTH_SHORT).show()
-        }
-
-        btnGrades.setOnClickListener {
-            selectedSubjectId?.let {
-                val intent = Intent(this, TeacherGrades::class.java)
-                intent.putExtra("subjectId", it)
-                startActivity(intent)
-            } ?: Toast.makeText(this, "Selecciona una clase", Toast.LENGTH_SHORT).show()
-        }
-
-        btnShowQr.setOnClickListener {
-            selectedSubjectId?.let {
-                showQrDialog(it)
-            } ?: Toast.makeText(this, "Selecciona una clase", Toast.LENGTH_SHORT).show()
-        }
+//        btnAssistance.setOnClickListener {
+//            selectedSubjectId?.let {
+//                val intent = Intent(this, attendance::class.java)
+//                intent.putExtra("subjectId", it)
+//                startActivity(intent)
+//            } ?: Toast.makeText(this, "Selecciona una clase", Toast.LENGTH_SHORT).show()
+//        }
+//
+//        btnGrades.setOnClickListener {
+//            selectedSubjectId?.let {
+//                val intent = Intent(this, TeacherGrades::class.java)
+//                intent.putExtra("subjectId", it)
+//                startActivity(intent)
+//            } ?: Toast.makeText(this, "Selecciona una clase", Toast.LENGTH_SHORT).show()
+//        }
+//
+//        btnShowQr.setOnClickListener {
+//            selectedSubjectId?.let {
+//                showQrDialog(it)
+//            } ?: Toast.makeText(this, "Selecciona una clase", Toast.LENGTH_SHORT).show()
+//        }
     }
 
     /**
