@@ -244,6 +244,7 @@ class ModifySubjects : AppCompatActivity(), OnEditSubjectClickListener, OnDelete
         }
     }
 
+
     private fun clearInputFieldsAndSelections() {
         etSubjectName.text.clear()
         etSubjectCode.text.clear()

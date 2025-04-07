@@ -14,7 +14,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.project.dataAplication.Companion.prefs
-import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import org.json.JSONObject
@@ -136,102 +135,45 @@ class StudentMain : AppCompatActivity() {
         val db = FirebaseFirestore.getInstance()
 
         try {
-            Log.d("QR_SCAN", "Raw QR: $qrString")
-            val sdfDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-            val currentDate = sdfDate.format(Date())
             val qrData = JSONObject(qrString)
             val subjectId = qrData.getString("subjectId")
             val currentTime = getCurrentTime()
 
-            Log.d("QR_SCAN", "Parsed subjectId: $subjectId")
-            Log.d("QR_SCAN", "Current time: $currentTime")
+            // 🔽 Obtener nombre desde Firestore (colección "users")
+            db.collection("users").document(userId).get()
+                .addOnSuccessListener { document ->
+                    val name = document.getString("name") ?: "Sin nombre"
 
-            db.collection("subjects").document(subjectId).get()
-                .addOnSuccessListener { subjectDoc ->
-                    val classStartTime = subjectDoc.getString("time")
-                    val enrolledStudents = subjectDoc.get("enrolledStudents") as? List<String> ?: emptyList()
-                    Log.d("QR_SCAN", "Class start time: $classStartTime")
+                    val attendanceData = mapOf(
+                        "studentId" to userId,
+                        "name" to name,
+                        "time" to currentTime
+                    )
 
-                    if (!enrolledStudents.contains(userId)) {
-                        Log.w("QR_SCAN", "User not enrolled in this subject")
-                        Toast.makeText(this, "No estás inscrito en esta clase ❌", Toast.LENGTH_LONG).show()
-                        return@addOnSuccessListener
-                    }
-
-                    if (classStartTime == null) {
-                        Log.w("QR_SCAN", "No start time found for subject")
-                        Toast.makeText(this, "Clase sin hora registrada", Toast.LENGTH_SHORT).show()
-                        return@addOnSuccessListener
-                    }
-
-                    if (isTooLate(currentTime, classStartTime)) {
-                        Log.w("QR_SCAN", "Too late for attendance")
-                        Toast.makeText(this, "Estás demasiado tarde para pasar lista ❌", Toast.LENGTH_LONG).show()
-                        return@addOnSuccessListener
-                    }
-
-                    db.collection("users").document(userId).get()
-                        .addOnSuccessListener { document ->
-                            val name = document.getString("name") ?: "Sin nombre"
-                            Log.d("QR_SCAN", "Student name: $name")
-
-                            val attendanceData = mapOf(
-                                "studentId" to userId,
-                                "name" to name,
-                                "time" to currentTime,
-                                "date" to currentDate
-                                )
-
-                            db.collection("subjects")
-                                .document(subjectId)
-                                .collection("attendance")
-                                .document(userId)
-                                .set(attendanceData)
-                                .addOnSuccessListener {
-                                    Log.d("QR_SCAN", "Attendance saved")
-                                    Toast.makeText(this, "Has pasado lista ✅", Toast.LENGTH_SHORT).show()
-                                }
-                                .addOnFailureListener {
-                                    Log.e("QR_SCAN", "Failed to save attendance", it)
-                                    Toast.makeText(this, "Error al registrar asistencia", Toast.LENGTH_SHORT).show()
-                                }
+                    db.collection("subjects")
+                        .document(subjectId)
+                        .collection("attendance")
+                        .document(userId)
+                        .set(attendanceData)
+                        .addOnSuccessListener {
+                            Toast.makeText(this, "Has pasado lista ✅", Toast.LENGTH_SHORT).show()
                         }
                         .addOnFailureListener {
-                            Log.e("QR_SCAN", "Failed to get user name", it)
-                            Toast.makeText(this, "Error al obtener tu nombre", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this, "Error al registrar asistencia", Toast.LENGTH_SHORT).show()
                         }
                 }
                 .addOnFailureListener {
-                    Log.e("QR_SCAN", "Failed to get subject data", it)
-                    Toast.makeText(this, "Error al obtener datos de la clase", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Error al obtener tu nombre", Toast.LENGTH_SHORT).show()
                 }
 
         } catch (e: Exception) {
-            Log.e("QR_SCAN", "Invalid QR", e)
             Toast.makeText(this, "QR inválido", Toast.LENGTH_SHORT).show()
+            Log.e("QR_SCAN", "Error: ${e.message}")
         }
     }
 
     private fun getCurrentTime(): String {
         val sdf = SimpleDateFormat("HH:mm", Locale.getDefault())
         return sdf.format(Date())
-    }
-
-    private fun isTooLate(currentTime: String, startTime: String): Boolean {
-        val sdf = SimpleDateFormat("HH:mm", Locale.getDefault())
-        val current = sdf.parse(currentTime)
-        val start = sdf.parse(startTime)
-
-        val diff = current.time - start.time
-        var minutesLate = diff / (60 * 1000)
-
-        if(minutesLate < 0)
-        {
-            minutesLate = minutesLate * (-1)
-        }
-
-        Log.d("QR_SCAN", "Minutes late: $minutesLate")
-
-        return minutesLate > 15
     }
 }
