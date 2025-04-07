@@ -64,8 +64,6 @@ class StudentMain : AppCompatActivity() {
 
         daySpinner = findViewById(R.id.dayspinner)
         setupDaySpinner()
-
-        loadEnrolledSubjects(selectedDay = daysOfWeek[0])
     }
 
     private fun setupDaySpinner() {
