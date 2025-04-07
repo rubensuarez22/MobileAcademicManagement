@@ -140,10 +140,14 @@ class StudentMain : AppCompatActivity() {
                 .addOnSuccessListener { document ->
                     val name = document.getString("name") ?: "Sin nombre"
 
+                    val sdfDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                    val currentDate = sdfDate.format(Date())
+
                     val attendanceData = mapOf(
                         "studentId" to userId,
                         "name" to name,
-                        "time" to currentTime
+                        "time" to currentTime,
+                        "date" to currentDate
                     )
 
                     db.collection("subjects")
