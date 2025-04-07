@@ -18,7 +18,6 @@ import com.google.zxing.BarcodeFormat
 import com.google.zxing.MultiFormatWriter
 import com.google.zxing.common.BitMatrix
 
-
 class TeacherClassViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
     private val tvClassName: TextView = view.findViewById(R.id.tvClassNameTeacher)
@@ -30,7 +29,7 @@ class TeacherClassViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
     private lateinit var db : FirebaseFirestore
 
-    fun bind(classItem: ClassItemTeacher) {
+    fun bind(classItem: ClassItemTeacher, selectd: String) {
 
         db = FirebaseFirestore.getInstance()
         // Asigna los datos a las vistas
@@ -43,7 +42,7 @@ class TeacherClassViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         btnAssistance.setOnClickListener {
             if (classId.isNotEmpty()) {
                 // Redirige a la vista de asistencia (AttendanceActivity)
-                val attendanceMain = AttendanceMain.newInstance(classId)
+                val attendanceMain = AttendanceMain.newInstance(classId, selectd)
                 attendanceMain.show((itemView.context as AppCompatActivity).supportFragmentManager, "AttendanceMain")
             } else {
                 Toast.makeText(itemView.context, "Selecciona una clase", Toast.LENGTH_SHORT).show()
@@ -97,7 +96,7 @@ class TeacherClassViewHolder(view: View) : RecyclerView.ViewHolder(view) {
                 Toast.makeText(itemView.context, "Error al obtener los datos", Toast.LENGTH_SHORT).show()
             }
     }
-//
+
     private fun generateQrCode(data: String): Bitmap? {
         return try {
             val matrix: BitMatrix = MultiFormatWriter().encode(data, BarcodeFormat.QR_CODE, 600, 600)

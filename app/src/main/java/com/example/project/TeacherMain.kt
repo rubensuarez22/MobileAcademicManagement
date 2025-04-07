@@ -3,7 +3,6 @@ package com.example.project
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -26,6 +25,7 @@ class TeacherMain : AppCompatActivity() {
     private lateinit var rvTeacherClasses: RecyclerView
     private lateinit var teacherClassList: ArrayList<ClassItemTeacher>
     private lateinit var teacherClassAdapter: TeacherClassAdapter
+    
 
     private var selectedDateString: String = ""
 
@@ -40,7 +40,7 @@ class TeacherMain : AppCompatActivity() {
         rvTeacherClasses = findViewById(R.id.rvTeacherClasses)
         rvTeacherClasses.layoutManager = LinearLayoutManager(this)
         teacherClassList = ArrayList()
-        teacherClassAdapter = TeacherClassAdapter(teacherClassList)
+        teacherClassAdapter = TeacherClassAdapter(teacherClassList, selectedDateString)
 
         rvTeacherClasses.adapter = teacherClassAdapter
 
@@ -97,17 +97,26 @@ class TeacherMain : AppCompatActivity() {
         datePicker.addOnPositiveButtonClickListener { selectedDateMillis ->
             val selectedDate = Date(selectedDateMillis)
 
-            val sdfDia = SimpleDateFormat("EEEE", Locale.ENGLISH) // Día como "Tuesday"
+            val sdfDia = SimpleDateFormat("EEEE", Locale.ENGLISH)
             val sdfFecha = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
 
-            val diaSemana = sdfDia.format(selectedDate)  // ej: "Tuesday"
+// Fuerza UTC
+            val utc = java.util.TimeZone.getTimeZone("UTC")
+            sdfDia.timeZone = utc
+            sdfFecha.timeZone = utc
+
+            val diaSemana = sdfDia.format(selectedDate)
             val fechaSeleccionada = sdfFecha.format(selectedDate)
 
-            // ✅ Cargar clases que ocurren ese día
-            loadTeacherClasses(diaSemana)
+            Log.e("Fecha", "Raw millis: $selectedDateMillis")
+            Log.e("Fecha", "Date obj (UTC): $selectedDate")
+            Log.e("Fecha", "Día semana: $diaSemana")
+            Log.e("Fecha", "Fecha seleccionada: $fechaSeleccionada")
 
-            // ✅ Guardar fecha seleccionada para consulta de asistencia después (opcional)
-            selectedDateString = fechaSeleccionada // si quieres usarlo luego
+// Luego lo usas
+            loadTeacherClasses(diaSemana)
+            selectedDateString = fechaSeleccionada
+            teacherClassAdapter.updateDate(selectedDateString)
         }
     }
 }

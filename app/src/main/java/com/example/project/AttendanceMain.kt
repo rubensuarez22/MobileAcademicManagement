@@ -18,11 +18,14 @@ class AttendanceMain  : BottomSheetDialogFragment() {
     private val attendanceList = mutableListOf<DataAttendance>()
     private val db = FirebaseFirestore.getInstance()
     private var subjectId: String? = null
+    private var fechaSeleccionada: String? = null // 👈 nueva variable
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // Recuperamos el subjectId pasado en los argumentos
         subjectId = arguments?.getString("subjectId")
+        fechaSeleccionada = arguments?.getString("fecha")
+        Log.e("FechaA","${fechaSeleccionada}")
     }
 
     override fun onCreateView(
@@ -76,6 +79,7 @@ class AttendanceMain  : BottomSheetDialogFragment() {
                         db.collection("subjects")
                             .document(subjectId)
                             .collection("attendance")
+                            .whereEqualTo("date", fechaSeleccionada)
                             .addSnapshotListener { snapshot, error ->
                                 if (error != null) {
                                     Log.w("attendance", "Error al escuchar asistencia", error)
@@ -115,10 +119,11 @@ class AttendanceMain  : BottomSheetDialogFragment() {
     }
 
     companion object {
-        fun newInstance(subjectId: String): AttendanceMain {
+        fun newInstance(subjectId: String, fecha: String): AttendanceMain {
             val fragment = AttendanceMain()
             val args = Bundle()
             args.putString("subjectId", subjectId)
+            args.putString("fecha", fecha) // 👈 agregamos la fecha
             fragment.arguments = args
             return fragment
         }
