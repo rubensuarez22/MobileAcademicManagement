@@ -25,7 +25,7 @@ class TeacherMain : AppCompatActivity() {
     private lateinit var rvTeacherClasses: RecyclerView
     private lateinit var teacherClassList: ArrayList<ClassItemTeacher>
     private lateinit var teacherClassAdapter: TeacherClassAdapter
-    
+    private lateinit var verAsistenciaBtn: Button
 
     private var selectedDateString: String = ""
 
@@ -44,7 +44,7 @@ class TeacherMain : AppCompatActivity() {
 
         rvTeacherClasses.adapter = teacherClassAdapter
 
-        val verAsistenciaBtn: Button = findViewById(R.id.btnVerAsistencia)
+        verAsistenciaBtn = findViewById(R.id.btnVerAsistencia)
         verAsistenciaBtn.setOnClickListener {
             abrirSelectorDeFecha()
         }
@@ -117,6 +117,7 @@ class TeacherMain : AppCompatActivity() {
             loadTeacherClasses(diaSemana)
             selectedDateString = fechaSeleccionada
             teacherClassAdapter.updateDate(selectedDateString)
+            verAsistenciaBtn.text = "$fechaSeleccionada"
         }
     }
 }
