@@ -27,8 +27,6 @@ class TeacherMain : AppCompatActivity() {
     private lateinit var teacherClassList: ArrayList<ClassItemTeacher>
     private lateinit var teacherClassAdapter: TeacherClassAdapter
 
-    // Agregamos la variable daysOfWeek para el spinner de días
-    private val daysOfWeek = arrayOf("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday")
     private var selectedDateString: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,25 +40,14 @@ class TeacherMain : AppCompatActivity() {
         rvTeacherClasses = findViewById(R.id.rvTeacherClasses)
         rvTeacherClasses.layoutManager = LinearLayoutManager(this)
         teacherClassList = ArrayList()
-        teacherClassAdapter = TeacherClassAdapter(teacherClassList) { classItem ->
-            if (selectedDateString.isNotEmpty()) {
-                consultarAsistencia(classItem.classId, classItem.className, selectedDateString)
-            } else {
-                Toast.makeText(this, "Primero selecciona una fecha 📅", Toast.LENGTH_SHORT).show()
-            }
-        }
+        teacherClassAdapter = TeacherClassAdapter(teacherClassList)
 
         rvTeacherClasses.adapter = teacherClassAdapter
-
-        // Spinner para los días (ya definido en el layout con id spinnerDaysTeacher)
-        val dayAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, daysOfWeek)
-
 
         val verAsistenciaBtn: Button = findViewById(R.id.btnVerAsistencia)
         verAsistenciaBtn.setOnClickListener {
             abrirSelectorDeFecha()
         }
-
 
         // Botones existentes
         val btnLogOut = findViewById<ImageView>(R.id.ivLogoutTeacher)
@@ -122,16 +109,5 @@ class TeacherMain : AppCompatActivity() {
             // ✅ Guardar fecha seleccionada para consulta de asistencia después (opcional)
             selectedDateString = fechaSeleccionada // si quieres usarlo luego
         }
-    }
-
-    fun consultarAsistencia(idClase: String, nombreClase: String, fecha: String) {
-        db.collection("Asistencias")
-            .whereEqualTo("idClase", idClase)
-            .whereEqualTo("fecha", fecha)
-            .get()
-            .addOnSuccessListener { asistencias ->
-                val estudiantes = asistencias.map { it.getString("idEstudiante") ?: "Desconocido" }
-                Log.d("Asistencia", "Clase: $nombreClase ($fecha) - Asistieron: $estudiantes")
-            }
     }
 }
