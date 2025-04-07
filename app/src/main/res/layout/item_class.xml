@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -14,9 +13,8 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- Nombre de la clase -->
         <TextView
-            android:id="@+id/tvClassName"
+            android:id="@+id/tvClassNameUser"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Mathematics"
@@ -26,84 +24,25 @@
             android:fontFamily="@font/josefin_sans_regular"
             android:layout_marginBottom="4dp" />
 
-        <!-- ID de la clase -->
         <TextView
-            android:id="@+id/tvIdClass"
+            android:id="@+id/tvGradeUser"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:fontFamily="@font/josefin_sans_regular"
-            android:text="04102002"
+            android:text="Current grade: A"
             android:textColor="#757575"
             android:textSize="14sp" />
 
-        <!-- Comentario o calificación -->
         <TextView
-            android:id="@+id/tvGrade"
+            android:id="@+id/tvHourUser"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Excellent performance in exams"
+            android:text="10:00 "
             android:textSize="14sp"
             android:textColor="#757575"
             android:fontFamily="@font/josefin_sans_regular"
             android:layout_marginBottom="16dp" />
-
-        <!-- Contenedor horizontal para los 3 botones -->
-        <LinearLayout
-            android:id="@+id/buttonContainer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:layout_marginTop="8dp">
-
-            <Button
-                android:id="@+id/btnQR"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                app:backgroundTint="@null"
-                android:background="@drawable/rounded_teal_button"
-                android:text="QR"
-                android:textColor="@android:color/white"
-                android:textSize="12sp"
-                android:fontFamily="@font/josefin_sans_regular"
-                android:paddingVertical="10dp"
-                android:maxLines="1"
-                android:ellipsize="end" />
-
-            <Button
-                android:id="@+id/btnGrades"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                app:backgroundTint="@null"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:background="@drawable/rounded_teal_button"
-                android:text="Grades"
-                android:textColor="@android:color/white"
-                android:textSize="12sp"
-                android:fontFamily="@font/josefin_sans_regular"
-                android:paddingVertical="10dp"
-                android:maxLines="1"
-                android:ellipsize="end" />
-
-            <Button
-                android:id="@+id/btnAssistance"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                app:backgroundTint="@null"
-                android:background="@drawable/rounded_teal_button"
-                android:text="Assistance"
-                android:textColor="@android:color/white"
-                android:textSize="12sp"
-                android:fontFamily="@font/josefin_sans_regular"
-                android:paddingVertical="10dp"
-                android:maxLines="1"
-                android:ellipsize="end" />
-        </LinearLayout>
 
     </LinearLayout>
 

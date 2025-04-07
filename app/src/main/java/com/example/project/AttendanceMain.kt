@@ -7,10 +7,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
-import java.text.SimpleDateFormat
-import java.util.*
 
-class attendance : AppCompatActivity() {
+class AttendanceMain : AppCompatActivity() {
 
     private lateinit var rvAttendance: RecyclerView
     private lateinit var attendanceAdapter: AttendanceAdapter

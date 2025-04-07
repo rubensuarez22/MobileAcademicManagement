@@ -17,14 +17,14 @@ class ClassAdapter(private val classList: List<ClassItem>) : RecyclerView.Adapte
         val currentItem = classList[position]
         holder.classNameTextView.text = currentItem.name
         holder.gradeTextView.text = currentItem.grade
-        holder.timeTextView.text = currentItem.time
+        holder.hourTextView.text = currentItem.time
     }
 
     override fun getItemCount() = classList.size
 
     class ClassViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val classNameTextView: TextView = itemView.findViewById(R.id.tvClassName)
-        val gradeTextView: TextView = itemView.findViewById(R.id.tvGrade)
-        val timeTextView: TextView = itemView.findViewById(R.id.tvIdClass)
+        val classNameTextView: TextView = itemView.findViewById(R.id.tvClassNameUser)
+        val gradeTextView: TextView = itemView.findViewById(R.id.tvGradeUser)
+        val hourTextView: TextView = itemView.findViewById(R.id.tvHourUser)
     }
 }

@@ -98,7 +98,7 @@ class StudentMain : AppCompatActivity() {
                         if (classDays.contains(selectedDay)) {
                             val className = document.getString("name") ?: ""
                             val time = document.getString("time") ?: ""
-                            val grade = ""
+                            val grade = "Current grade is not defined yet."
                             val classItem = ClassItem(className, grade, time)
                             classList.add(classItem)
                         }
