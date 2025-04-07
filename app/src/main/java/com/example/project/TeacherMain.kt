@@ -2,15 +2,20 @@ package com.example.project
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.project.dataAplication.Companion.prefs
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import java.text.SimpleDateFormat
 import java.util.ArrayList
+import java.util.Date
+import java.util.Locale
 
 class TeacherMain : AppCompatActivity() {
 
@@ -24,6 +29,7 @@ class TeacherMain : AppCompatActivity() {
 
     // Agregamos la variable daysOfWeek para el spinner de días
     private val daysOfWeek = arrayOf("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday")
+    private var selectedDateString: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,24 +42,25 @@ class TeacherMain : AppCompatActivity() {
         rvTeacherClasses = findViewById(R.id.rvTeacherClasses)
         rvTeacherClasses.layoutManager = LinearLayoutManager(this)
         teacherClassList = ArrayList()
-        teacherClassAdapter = TeacherClassAdapter(teacherClassList)
+        teacherClassAdapter = TeacherClassAdapter(teacherClassList) { classItem ->
+            if (selectedDateString.isNotEmpty()) {
+                consultarAsistencia(classItem.classId, classItem.className, selectedDateString)
+            } else {
+                Toast.makeText(this, "Primero selecciona una fecha 📅", Toast.LENGTH_SHORT).show()
+            }
+        }
+
         rvTeacherClasses.adapter = teacherClassAdapter
 
         // Spinner para los días (ya definido en el layout con id spinnerDaysTeacher)
-        val spiSchedule = findViewById<Spinner>(R.id.spinnerDaysTeacher)
         val dayAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, daysOfWeek)
 
-        dayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spiSchedule.adapter = dayAdapter
 
-        // Cada vez que se seleccione un día, se carga el RecyclerView con las clases de ese día
-        spiSchedule.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                val selectedDay = daysOfWeek[position]
-                loadTeacherClasses(selectedDay)
-            }
-            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        val verAsistenciaBtn: Button = findViewById(R.id.btnVerAsistencia)
+        verAsistenciaBtn.setOnClickListener {
+            abrirSelectorDeFecha()
         }
+
 
         // Botones existentes
         val btnLogOut = findViewById<ImageView>(R.id.ivLogoutTeacher)
@@ -90,6 +97,41 @@ class TeacherMain : AppCompatActivity() {
             }
             .addOnFailureListener { exception ->
                 Toast.makeText(this, "Error al cargar clases: ${exception.message}", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    fun abrirSelectorDeFecha() {
+        val datePicker = MaterialDatePicker.Builder.datePicker()
+            .setTitleText("Selecciona una fecha")
+            .build()
+
+        datePicker.show(supportFragmentManager, "DATE_PICKER")
+
+        datePicker.addOnPositiveButtonClickListener { selectedDateMillis ->
+            val selectedDate = Date(selectedDateMillis)
+
+            val sdfDia = SimpleDateFormat("EEEE", Locale.ENGLISH) // Día como "Tuesday"
+            val sdfFecha = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+
+            val diaSemana = sdfDia.format(selectedDate)  // ej: "Tuesday"
+            val fechaSeleccionada = sdfFecha.format(selectedDate)
+
+            // ✅ Cargar clases que ocurren ese día
+            loadTeacherClasses(diaSemana)
+
+            // ✅ Guardar fecha seleccionada para consulta de asistencia después (opcional)
+            selectedDateString = fechaSeleccionada // si quieres usarlo luego
+        }
+    }
+
+    fun consultarAsistencia(idClase: String, nombreClase: String, fecha: String) {
+        db.collection("Asistencias")
+            .whereEqualTo("idClase", idClase)
+            .whereEqualTo("fecha", fecha)
+            .get()
+            .addOnSuccessListener { asistencias ->
+                val estudiantes = asistencias.map { it.getString("idEstudiante") ?: "Desconocido" }
+                Log.d("Asistencia", "Clase: $nombreClase ($fecha) - Asistieron: $estudiantes")
             }
     }
 }

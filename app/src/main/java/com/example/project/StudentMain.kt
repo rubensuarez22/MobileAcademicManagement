@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.project.dataAplication.Companion.prefs
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import org.json.JSONObject
@@ -136,6 +137,8 @@ class StudentMain : AppCompatActivity() {
 
         try {
             Log.d("QR_SCAN", "Raw QR: $qrString")
+            val sdfDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+            val currentDate = sdfDate.format(Date())
             val qrData = JSONObject(qrString)
             val subjectId = qrData.getString("subjectId")
             val currentTime = getCurrentTime()
@@ -175,8 +178,9 @@ class StudentMain : AppCompatActivity() {
                             val attendanceData = mapOf(
                                 "studentId" to userId,
                                 "name" to name,
-                                "time" to currentTime
-                            )
+                                "time" to currentTime,
+                                "date" to currentDate
+                                )
 
                             db.collection("subjects")
                                 .document(subjectId)
@@ -230,5 +234,4 @@ class StudentMain : AppCompatActivity() {
 
         return minutesLate > 15
     }
-
 }

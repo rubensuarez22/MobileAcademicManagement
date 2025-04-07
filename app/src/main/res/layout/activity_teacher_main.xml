@@ -57,14 +57,13 @@
             android:textColor="#333333"
             android:layout_marginBottom="4dp"/>
 
-        <!-- Spinner de días -->
-        <Spinner
-            android:id="@+id/spinnerDaysTeacher"
+        <Button
+            android:id="@+id/btnVerAsistencia"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/rounded_edittext_teal_border"
-            android:padding="10dp"/>
+            android:text="Ver asistencia por fecha"
+            android:layout_marginTop="16dp" />
+
 
         <!-- Título "Class Schedule" -->
         <TextView
