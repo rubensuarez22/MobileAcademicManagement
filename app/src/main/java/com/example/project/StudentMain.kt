@@ -98,7 +98,6 @@ class StudentMain : AppCompatActivity() {
                         if (classDays.contains(selectedDay)) {
                             val className = document.getString("name") ?: ""
                             val time = document.getString("time") ?: ""
-                            // Se consulta la subcolección "grades" para buscar la calificación asignada al usuario
                             document.reference.collection("grades")
                                 .document(userId)
                                 .get()
@@ -108,25 +107,22 @@ class StudentMain : AppCompatActivity() {
                                     } else {
                                         "Current grade is not defined yet."
                                     }
-                                    val classItem = ClassItem(className, grade, time)
-                                    classList.add(classItem)
+                                    classList.add(ClassItem(className, grade, time))
                                     adapter.notifyDataSetChanged()
                                 }
                                 .addOnFailureListener {
-                                    // En caso de error, se asigna el valor por defecto
-                                    val classItem = ClassItem(className, "Current grade is not defined yet.", time)
-                                    classList.add(classItem)
+                                    classList.add(ClassItem(className, "Current grade is not defined yet.", time))
                                     adapter.notifyDataSetChanged()
                                 }
                         }
                     }
+                    adapter.notifyDataSetChanged()
                 }
                 .addOnFailureListener { e ->
                     Log.w("StudentMain", "Error getting documents: ", e)
                 }
         }
     }
-
 
     // ✅ Esta función registra la asistencia al leer el QR (con nombre desde Firestore)
     fun handleScannedQr(qrString: String) {
