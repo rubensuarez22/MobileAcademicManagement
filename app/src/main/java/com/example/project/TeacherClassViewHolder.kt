@@ -45,8 +45,6 @@ class TeacherClassViewHolder(view: View) : RecyclerView.ViewHolder(view) {
                 // Redirige a la vista de asistencia (AttendanceActivity)
                 val attendanceMain = AttendanceMain.newInstance(classId)
                 attendanceMain.show((itemView.context as AppCompatActivity).supportFragmentManager, "AttendanceMain")
-
-
             } else {
                 Toast.makeText(itemView.context, "Selecciona una clase", Toast.LENGTH_SHORT).show()
             }
@@ -71,9 +69,8 @@ class TeacherClassViewHolder(view: View) : RecyclerView.ViewHolder(view) {
                 Toast.makeText(itemView.context, "Selecciona una clase", Toast.LENGTH_SHORT).show()
             }
         }
-
-
     }
+
     private fun showQrDialog(subjectId: String) {
         db.collection("subjects").document(subjectId).get()
             .addOnSuccessListener { document ->
@@ -118,6 +115,4 @@ class TeacherClassViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             null
         }
     }
-
 }
-
