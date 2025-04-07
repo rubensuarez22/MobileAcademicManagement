@@ -19,7 +19,6 @@ class TeacherGrades : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_teacher_grades)
 
         rvStudentGrades = findViewById(R.id.rvStudentGrades)
@@ -61,10 +60,12 @@ class TeacherGrades : AppCompatActivity() {
                         // Construye un mapa de studentId a grade
                         val gradesMap = mutableMapOf<String, String>()
                         for (doc in gradesSnapshot.documents) {
-                            val studentId = doc.getString("matricula") ?: "Current ID not found"
-//                            if (studentId.isNotEmpty()) {
-//                                gradesMap[studentId] = grade
-//                            }
+                            // Se espera que en los documentos de grades el campo que identifica al estudiante sea "studentId"
+                            val studentId = doc.getString("studentId") ?: "StudentId NOT FOUND"
+                            if (studentId.isNotEmpty()) {
+                                val grade = doc.getString("grade") ?: "grade NOT FOUND"
+                                gradesMap[studentId] = grade
+                            }
                         }
                         // Ahora consulta la información de cada alumno (desde la colección "users")
                         val tasks = enrolledStudents.map { userId ->
@@ -77,9 +78,9 @@ class TeacherGrades : AppCompatActivity() {
                                     val name = snapshot.getString("name") ?: "Desconocido"
                                     val studentId = snapshot.id
                                     // Si existe calificación asignada, se asigna; si no, queda vacía
-                                  //  val grade = gradesMap[studentId] ?: "Current grade not defined"
-                                  //  val studentGrade = StudentGrade(name, studentId, grade)
-                                    //studentsList.add(studentGrade)
+                                    val grade = gradesMap[studentId] ?: "Current grade not defined"
+                                    val studentGrade = StudentGrade(name, studentId, grade)
+                                    studentsList.add(studentGrade)
                                 }
                                 adapter.notifyDataSetChanged()
                             }

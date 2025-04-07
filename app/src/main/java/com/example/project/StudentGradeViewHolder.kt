@@ -8,14 +8,12 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 
 class StudentGradeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    val tvStudentName: TextView = itemView.findViewById(R.id.textView20)
-    val tvStudentId: TextView = itemView.findViewById(R.id.textView21)
-    val btnAssignGrade: Button = itemView.findViewById(R.id.button3)
-    val etGrade: EditText = itemView.findViewById(R.id.editTextNumberSigned)
+    val tvStudentName: TextView = itemView.findViewById(R.id.tvStudentName)
+    val btnAssignGrade: Button = itemView.findViewById(R.id.btnAssignGrade)
+    val etGrade: EditText = itemView.findViewById(R.id.etGrade)
 
     fun bind(student: StudentGrade, onAssignClick: (StudentGrade, String) -> Unit) {
         tvStudentName.text = student.name
-        tvStudentId.text = student.id.toString()
 
         btnAssignGrade.setOnClickListener {
             val gradeText = etGrade.text.toString()

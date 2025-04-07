@@ -16,7 +16,7 @@ class ClassAdapter(private val classList: List<ClassItem>) : RecyclerView.Adapte
     override fun onBindViewHolder(holder: ClassViewHolder, position: Int) {
         val currentItem = classList[position]
         holder.classNameTextView.text = currentItem.name
-        holder.gradeTextView.text = currentItem.grade
+        holder.gradeTextView.text ="Your current grade is: " + currentItem.grade
         holder.hourTextView.text = currentItem.time
     }
 

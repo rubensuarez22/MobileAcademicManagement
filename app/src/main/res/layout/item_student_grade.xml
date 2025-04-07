@@ -1,86 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="6dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
-    android:background="#FDFDFD">
+    app:cardCornerRadius="12dp"
+    app:cardElevation="6dp"
+    app:cardUseCompatPadding="true"
+    app:cardBackgroundColor="@android:color/white">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="187dp"
-        android:orientation="horizontal"
+        android:layout_height="wrap_content"
         android:padding="16dp">
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="3"
-            android:orientation="vertical">
+        <!-- Nombre del estudiante -->
+        <TextView
+            android:id="@+id/tvStudentName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Jane Doe"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
-            <TextView
-                android:id="@+id/textView20"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/josefin_sans_regular"
-                android:text="Name Student"
-                android:textColor="#56B4B8"
-                android:textSize="30sp"
-                android:textStyle="bold" />
+        <!-- Etiqueta "Enter Grade" -->
+        <TextView
+            android:id="@+id/tvEnterGrade"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Enter Grade"
+            android:textSize="18dp"
+            android:textColor="#757575"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
-            <TextView
-                android:id="@+id/textView21"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/josefin_sans_regular"
-                android:text="175339"
-                android:textColor="#000000"
-                android:textSize="18sp" />
+        <!-- Botón "Assign Grade" -->
+        <Button
+            android:id="@+id/btnAssignGrade"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Assign Grade"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/white"
+            app:backgroundTint="@null"
+            android:background="@drawable/rounded_teal_button"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@id/tvStudentName"
+            app:layout_constraintStart_toStartOf="parent" />
 
-            <Button
-                android:id="@+id/button3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/button_border_only"
-                android:fontFamily="@font/josefin_sans_regular"
-                android:padding="10dp"
-                android:text="Assign Grade"
-                android:textColor="@color/teal_200"
-                android:textSize="18sp" />
-        </LinearLayout>
+        <!-- Campo para ingresar la calificación -->
+        <EditText
+            android:id="@+id/etGrade"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/rounded_edittext_teal_border"
+            android:gravity="center_vertical"
+            android:hint="10.5, 0"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="6dp"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvEnterGrade" />
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/textViewEnterGrade"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:fontFamily="@font/josefin_sans_regular"
-                android:text="Enter Grade"
-                android:textColor="#56B4B8"
-                android:textSize="16sp" />
-
-            <EditText
-                android:id="@+id/editTextNumberSigned"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/rounded_edittext_teal_border"
-                android:ems="10"
-                android:fontFamily="@font/josefin_sans_regular"
-                android:hint="0"
-                android:inputType="numberSigned"
-                android:padding="10dp"
-                android:textAlignment="center"
-                android:textColor="#000000"
-                android:textSize="34sp" />
-        </LinearLayout>
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

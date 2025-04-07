@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".TeacherGrades"
-    android:background="#56B4B8"
+    android:background="#FFFFFF"
     android:padding="24dp">
 
     <LinearLayout
@@ -28,7 +28,7 @@
             android:layout_marginBottom="24dp"
             android:fontFamily="@font/josefin_sans_regular"
             android:text="Assign Grades"
-            android:textColor="@android:color/white"
+            android:textColor="@android:color/black"
             android:textSize="32sp" />
 
         <androidx.recyclerview.widget.RecyclerView

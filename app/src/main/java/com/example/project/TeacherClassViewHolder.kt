@@ -11,6 +11,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.zxing.BarcodeFormat
@@ -42,9 +43,10 @@ class TeacherClassViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         btnAssistance.setOnClickListener {
             if (classId.isNotEmpty()) {
                 // Redirige a la vista de asistencia (AttendanceActivity)
-                val intent = Intent(itemView.context, AttendanceMain::class.java)
-                intent.putExtra("subjectId", classId)
-                itemView.context.startActivity(intent)
+                val attendanceMain = AttendanceMain.newInstance(classId)
+                attendanceMain.show((itemView.context as AppCompatActivity).supportFragmentManager, "AttendanceMain")
+
+
             } else {
                 Toast.makeText(itemView.context, "Selecciona una clase", Toast.LENGTH_SHORT).show()
             }

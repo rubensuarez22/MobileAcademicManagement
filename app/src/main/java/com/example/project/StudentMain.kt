@@ -93,23 +93,40 @@ class StudentMain : AppCompatActivity() {
                 .get()
                 .addOnSuccessListener { querySnapshot ->
                     classList.clear()
-                    for (document in querySnapshot) {
+                    for (document in querySnapshot.documents) {
                         val classDays = document.get("days") as? List<String> ?: emptyList()
                         if (classDays.contains(selectedDay)) {
                             val className = document.getString("name") ?: ""
                             val time = document.getString("time") ?: ""
-                            val grade = "Current grade is not defined yet."
-                            val classItem = ClassItem(className, grade, time)
-                            classList.add(classItem)
+                            // Se consulta la subcolección "grades" para buscar la calificación asignada al usuario
+                            document.reference.collection("grades")
+                                .document(userId)
+                                .get()
+                                .addOnSuccessListener { gradeDoc ->
+                                    val grade = if (gradeDoc.exists()) {
+                                        gradeDoc.getString("grade") ?: "Current grade is not defined yet."
+                                    } else {
+                                        "Current grade is not defined yet."
+                                    }
+                                    val classItem = ClassItem(className, grade, time)
+                                    classList.add(classItem)
+                                    adapter.notifyDataSetChanged()
+                                }
+                                .addOnFailureListener {
+                                    // En caso de error, se asigna el valor por defecto
+                                    val classItem = ClassItem(className, "Current grade is not defined yet.", time)
+                                    classList.add(classItem)
+                                    adapter.notifyDataSetChanged()
+                                }
                         }
                     }
-                    adapter.notifyDataSetChanged()
                 }
                 .addOnFailureListener { e ->
                     Log.w("StudentMain", "Error getting documents: ", e)
                 }
         }
     }
+
 
     // ✅ Esta función registra la asistencia al leer el QR (con nombre desde Firestore)
     fun handleScannedQr(qrString: String) {
