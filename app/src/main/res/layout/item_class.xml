@@ -14,7 +14,7 @@
         android:padding="16dp">
 
         <TextView
-            android:id="@+id/tvClassName"
+            android:id="@+id/tvClassNameUser"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Mathematics"
@@ -25,20 +25,20 @@
             android:layout_marginBottom="4dp" />
 
         <TextView
-            android:id="@+id/tvTime"
+            android:id="@+id/tvGradeUser"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Grade : A"
-            android:textSize="14sp"
-            android:textColor="#757575"
+            android:layout_marginBottom="8dp"
             android:fontFamily="@font/josefin_sans_regular"
-            android:layout_marginBottom="8dp" />
+            android:text="Current grade: A"
+            android:textColor="#757575"
+            android:textSize="14sp" />
 
         <TextView
-            android:id="@+id/tvGrade"
+            android:id="@+id/tvHourUser"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Excellent performance in exams"
+            android:text="10:00 "
             android:textSize="14sp"
             android:textColor="#757575"
             android:fontFamily="@font/josefin_sans_regular"

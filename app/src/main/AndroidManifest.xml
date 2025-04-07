@@ -14,7 +14,7 @@
         android:theme="@style/Theme.Project"
         tools:targetApi="31">
         <activity
-            android:name=".attendance"
+            android:name=".AttendanceMain"
             android:exported="false" />
         <activity
             android:name=".ModifySubjects"
@@ -34,6 +34,10 @@
         <activity
             android:name=".StudentMain"
             android:exported="false" />
+        <activity
+            android:name=".TeacherGrades"
+            android:exported="false"/>
+
         <activity
             android:name=".MainActivity"
             android:exported="true">

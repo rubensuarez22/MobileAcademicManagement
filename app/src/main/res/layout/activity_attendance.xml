@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="#56B4B8"
     android:padding="24dp"
-    tools:context=".attendance">
+    tools:context=".AttendanceMain">
 
     <LinearLayout
         android:layout_width="match_parent"

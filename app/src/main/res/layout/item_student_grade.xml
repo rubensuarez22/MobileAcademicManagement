@@ -4,13 +4,13 @@
     app:cardCornerRadius="12dp"
     app:cardElevation="6dp"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:layout_margin="10dp"
     android:background="#FDFDFD">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="166dp"
+        android:layout_height="187dp"
         android:orientation="horizontal"
         android:padding="16dp">
 
